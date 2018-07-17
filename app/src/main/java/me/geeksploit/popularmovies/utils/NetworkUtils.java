@@ -8,8 +8,11 @@ import android.widget.ImageView;
 
 import com.squareup.picasso.Picasso;
 
+import java.io.IOException;
+import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.util.Scanner;
 
 import me.geeksploit.popularmovies.R;
 
@@ -34,6 +37,27 @@ public final class NetworkUtils {
         } catch (MalformedURLException e) {
             e.printStackTrace();
             return null;
+        }
+    }
+
+    public static String getResponseFromHttpUrl(URL url) {
+        if (url == null) return null;
+
+        HttpURLConnection urlConnection = null;
+        try {
+            urlConnection = (HttpURLConnection) url.openConnection();
+            Scanner scanner = new Scanner(urlConnection.getInputStream());
+            scanner.useDelimiter("\\A");
+
+            if (scanner.hasNext()) return scanner.next();
+            else return null;
+
+        } catch (IOException e) {
+            e.printStackTrace();
+            return null;
+        } finally {
+            if (urlConnection != null)
+                urlConnection.disconnect();
         }
     }
 
