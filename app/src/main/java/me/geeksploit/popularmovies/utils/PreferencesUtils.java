@@ -22,7 +22,7 @@ public class PreferencesUtils {
         return getPreferences(c).getString(PREF_KEY_API,PREF_VALUE_API_DEFAULT);
     }
 
-    public static void setPrefApiKey(Context c, String apiKey) {
+    public static void setApiKey(Context c, String apiKey) {
         getPreferences(c).edit().putString(PREF_KEY_API, apiKey).apply();
     }
 
