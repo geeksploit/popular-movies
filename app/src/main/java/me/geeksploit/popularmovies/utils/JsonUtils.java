@@ -1,6 +1,34 @@
 package me.geeksploit.popularmovies.utils;
 
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import me.geeksploit.popularmovies.model.MovieModel;
+
+import static me.geeksploit.popularmovies.utils.JsonContractTheMovieDb.OVERVIEW;
+import static me.geeksploit.popularmovies.utils.JsonContractTheMovieDb.POSTER_PATH;
+import static me.geeksploit.popularmovies.utils.JsonContractTheMovieDb.RELEASE_DATE;
+import static me.geeksploit.popularmovies.utils.JsonContractTheMovieDb.TITLE;
+import static me.geeksploit.popularmovies.utils.JsonContractTheMovieDb.VOTE_AVERAGE;
+
 public final class JsonUtils {
+
+    private static MovieModel[] parseMovies(JSONArray jsonMovies) throws JSONException {
+        MovieModel[] movies = new MovieModel[jsonMovies.length()];
+        for (int i = 0; i < movies.length; i++) {
+            JSONObject jsonMovie = jsonMovies.getJSONObject(i);
+            movies[i] = new MovieModel(
+                    jsonMovie.getDouble(VOTE_AVERAGE),
+                    jsonMovie.getString(POSTER_PATH),
+                    jsonMovie.getString(TITLE),
+                    jsonMovie.getString(OVERVIEW),
+                    jsonMovie.getString(RELEASE_DATE)
+            );
+        }
+        return movies;
+    }
+
 }
 
 final class JsonContractTheMovieDb {
