@@ -32,4 +32,24 @@ public class MovieModel {
         this.releaseDate = releaseDate;
     }
 
+    public double getVoteAverage() {
+        return voteAverage;
+    }
+
+    public String getPosterPath() {
+        return posterPath;
+    }
+
+    public String getTitle() {
+        return title;
+    }
+
+    public String getOverview() {
+        return overview;
+    }
+
+    public String getReleaseDate() {
+        return releaseDate;
+    }
+
 }
