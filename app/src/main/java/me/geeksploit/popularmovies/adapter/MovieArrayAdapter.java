@@ -30,8 +30,8 @@ public class MovieArrayAdapter extends BaseAdapter {
     }
 
     @Override
-    public long getItemId(int i) {
-        return 0;
+    public long getItemId(int id) {
+        return id;
     }
 
     @Override
