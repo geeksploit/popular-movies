@@ -18,4 +18,12 @@ public class PreferencesUtils {
         return PreferenceManager.getDefaultSharedPreferences(context);
     }
 
+    public static String getApiKey(Context c) {
+        return getPreferences(c).getString(PREF_KEY_API,PREF_VALUE_API_DEFAULT);
+    }
+
+    public static void setPrefApiKey(Context c, String apiKey) {
+        getPreferences(c).edit().putString(PREF_KEY_API, apiKey).apply();
+    }
+
 }
