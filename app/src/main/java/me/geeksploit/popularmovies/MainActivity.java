@@ -74,6 +74,7 @@ public class MainActivity extends AppCompatActivity {
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                switchSortMode();
                 updateFab(fab);
             }
         });
@@ -87,6 +88,11 @@ public class MainActivity extends AppCompatActivity {
                         R.drawable.sort_popular :
                         R.drawable.sort_top_rated)
         );
+    }
+
+    private void switchSortMode() {
+        PreferencesUtils.switchSortMode(getApplicationContext());
+        fetchMoviesData();
     }
 
     private void fetchMoviesData() {
