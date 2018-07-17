@@ -3,8 +3,13 @@ package me.geeksploit.popularmovies.utils;
 import android.content.Context;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
+import android.net.Uri;
 
 public final class NetworkUtils {
+
+    private static final String TMDB_POSTER_URL_BASE = "http://image.tmdb.org/t/p";
+    private static final String TMDB_POSTER_URL_PART_LORES = "w185";
+    private static final String TMDB_POSTER_URL_PART_HIRES = "w342";
 
     public static boolean haveNetworkConnection(Context context) {
         // TODO: is there a better way to check if the Internet connection is up and running?
@@ -25,5 +30,12 @@ public final class NetworkUtils {
                     haveConnectedMobile = true;
         }
         return haveConnectedWifi || haveConnectedMobile;
+    }
+
+    private static Uri buildPosterUri(String posterPath, boolean hires) {
+        return Uri.parse(TMDB_POSTER_URL_BASE).buildUpon()
+                .appendEncodedPath(hires ? TMDB_POSTER_URL_PART_HIRES : TMDB_POSTER_URL_PART_LORES)
+                .appendEncodedPath(posterPath)
+                .build();
     }
 }
