@@ -1,10 +1,23 @@
 package me.geeksploit.popularmovies.adapter;
 
+import android.content.Context;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 
+import me.geeksploit.popularmovies.model.MovieModel;
+
 public class MovieArrayAdapter extends BaseAdapter {
+
+    private final Context context;
+    private final int movieLayout;
+    private final MovieModel[] movies;
+
+    public MovieArrayAdapter(Context context, int movieLayout, MovieModel[] movies) {
+        this.context = context;
+        this.movieLayout = movieLayout;
+        this.movies = movies;
+    }
 
     @Override
     public int getCount() {
