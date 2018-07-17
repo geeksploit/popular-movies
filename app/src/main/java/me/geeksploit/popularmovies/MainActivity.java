@@ -7,6 +7,7 @@ import android.content.res.Configuration;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
+import android.support.design.widget.Snackbar;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
@@ -105,6 +106,7 @@ public class MainActivity extends AppCompatActivity {
         protected void onPostExecute(MovieModel[] movies) {
 
             if (movies == null) {
+                showFetchError(fab);
                 return;
             }
 
@@ -158,5 +160,19 @@ public class MainActivity extends AppCompatActivity {
                         })
                 .create()
                 .show();
+    }
+
+    private void showFetchError(View view) {
+        Snackbar sb = Snackbar.make(view,"", Snackbar.LENGTH_INDEFINITE);
+        if (NetworkUtils.haveNetworkConnection(getApplicationContext())) {
+            sb.setText(R.string.error_wrong_api_key);
+            sb.setAction(R.string.action_enter_api_key, new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    showApiKeyDialog(MainActivity.this);
+                }
+            });
+        }
+        sb.show();
     }
 }
