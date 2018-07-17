@@ -4,6 +4,11 @@ import android.content.Context;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.net.Uri;
+import android.widget.ImageView;
+
+import com.squareup.picasso.Picasso;
+
+import me.geeksploit.popularmovies.R;
 
 public final class NetworkUtils {
 
@@ -30,6 +35,14 @@ public final class NetworkUtils {
                     haveConnectedMobile = true;
         }
         return haveConnectedWifi || haveConnectedMobile;
+    }
+
+    public static void loadPoster(Context context, String path, ImageView thumbnail, boolean hires) {
+        Picasso.with(context)
+                .load(NetworkUtils.buildPosterUri(path, hires))
+                .placeholder(R.drawable.placeholder_loading) //
+                .error(R.drawable.placeholder_noimage) //
+                .into(thumbnail);
     }
 
     private static Uri buildPosterUri(String posterPath, boolean hires) {
