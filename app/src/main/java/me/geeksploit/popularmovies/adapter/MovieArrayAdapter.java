@@ -25,8 +25,8 @@ public class MovieArrayAdapter extends BaseAdapter {
     }
 
     @Override
-    public Object getItem(int i) {
-        return null;
+    public Object getItem(int position) {
+        return movies[position];
     }
 
     @Override
