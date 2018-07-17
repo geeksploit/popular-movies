@@ -135,7 +135,7 @@ public class MainActivity extends AppCompatActivity {
                 .setPositiveButton(android.R.string.ok,
                         new DialogInterface.OnClickListener() {
                             public void onClick(DialogInterface dialog, int id) {
-                                PreferencesUtils.setPrefApiKey(
+                                PreferencesUtils.setApiKey(
                                         getApplicationContext(),
                                         apiKey.getText().toString()
                                 );
