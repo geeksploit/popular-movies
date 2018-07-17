@@ -8,13 +8,34 @@ import android.widget.ImageView;
 
 import com.squareup.picasso.Picasso;
 
+import java.net.MalformedURLException;
+import java.net.URL;
+
 import me.geeksploit.popularmovies.R;
 
 public final class NetworkUtils {
 
+    private static final String TMDB_MOVIES_URL_BASE = "http://api.themoviedb.org/3/movie";
+
     private static final String TMDB_POSTER_URL_BASE = "http://image.tmdb.org/t/p";
     private static final String TMDB_POSTER_URL_PART_LORES = "w185";
     private static final String TMDB_POSTER_URL_PART_HIRES = "w342";
+
+    private static final String PARAM_API_KEY = "api_key";
+
+    public static URL buildUrl(String sortMode, String apiKey) {
+        // TODO: should url building process rely on sortMode given as a parameter?
+        Uri builtUri = Uri.parse(TMDB_MOVIES_URL_BASE).buildUpon()
+                .appendPath(sortMode)
+                .appendQueryParameter(PARAM_API_KEY, apiKey)
+                .build();
+        try {
+            return new URL(builtUri.toString());
+        } catch (MalformedURLException e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
 
     public static boolean haveNetworkConnection(Context context) {
         // TODO: is there a better way to check if the Internet connection is up and running?
