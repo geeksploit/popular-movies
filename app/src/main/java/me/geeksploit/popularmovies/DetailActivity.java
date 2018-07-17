@@ -26,6 +26,11 @@ public class DetailActivity extends AppCompatActivity {
 
         ImageView poster = findViewById(R.id.detail_poster);
         NetworkUtils.loadPoster(this, movie.getPosterPath(), poster, true);
+
+        setText(R.id.detail_title, movie.getTitle());
+        setText(R.id.detail_release_date, movie.getReleaseDate());
+        setText(R.id.detail_vote_average, String.valueOf(movie.getVoteAverage()));
+        setText(R.id.detail_overview, movie.getOverview());
     }
 
     private void setText(int id, String text) {
