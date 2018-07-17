@@ -6,12 +6,7 @@ import org.json.JSONObject;
 
 import me.geeksploit.popularmovies.model.MovieModel;
 
-import static me.geeksploit.popularmovies.utils.JsonContractTheMovieDb.OVERVIEW;
-import static me.geeksploit.popularmovies.utils.JsonContractTheMovieDb.POSTER_PATH;
-import static me.geeksploit.popularmovies.utils.JsonContractTheMovieDb.RELEASE_DATE;
-import static me.geeksploit.popularmovies.utils.JsonContractTheMovieDb.RESULTS;
-import static me.geeksploit.popularmovies.utils.JsonContractTheMovieDb.TITLE;
-import static me.geeksploit.popularmovies.utils.JsonContractTheMovieDb.VOTE_AVERAGE;
+import static me.geeksploit.popularmovies.utils.JsonContractTheMovieDb.*;
 
 public final class JsonUtils {
 
