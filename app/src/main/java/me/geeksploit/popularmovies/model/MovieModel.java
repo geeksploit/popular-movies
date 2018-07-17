@@ -13,4 +13,23 @@ package me.geeksploit.popularmovies.model;
  * </ul>
  */
 public class MovieModel {
+
+    private final double voteAverage;
+    private final String posterPath;
+    private final String title;
+    private final String overview;
+    private final String releaseDate;
+
+    public MovieModel(double voteAverage,
+                      String posterPath,
+                      String title,
+                      String overview,
+                      String releaseDate) {
+        this.voteAverage = voteAverage;
+        this.posterPath = posterPath;
+        this.title = title;
+        this.overview = overview;
+        this.releaseDate = releaseDate;
+    }
+
 }
