@@ -2,6 +2,7 @@ package me.geeksploit.popularmovies;
 
 import android.content.Intent;
 import android.content.res.Configuration;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.content.ContextCompat;
@@ -13,7 +14,12 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.GridView;
 
+import java.net.URL;
+
+import me.geeksploit.popularmovies.adapter.MovieArrayAdapter;
 import me.geeksploit.popularmovies.model.MovieModel;
+import me.geeksploit.popularmovies.utils.JsonUtils;
+import me.geeksploit.popularmovies.utils.NetworkUtils;
 import me.geeksploit.popularmovies.utils.PreferencesUtils;
 
 public class MainActivity extends AppCompatActivity {
@@ -65,6 +71,32 @@ public class MainActivity extends AppCompatActivity {
                         R.drawable.sort_popular :
                         R.drawable.sort_top_rated)
         );
+    }
+
+    class FetchMoviesTask extends AsyncTask<String, Void, MovieModel[]> {
+
+        @Override
+        protected MovieModel[] doInBackground(String... params) {
+            String sortMode = params[0];
+            String apiKey = params[1];
+            URL movieQueryUrl = NetworkUtils.buildUrl(sortMode, apiKey);
+            String jsonMovieResponse = NetworkUtils.getResponseFromHttpUrl(movieQueryUrl);
+            return JsonUtils.parseTheMovieDb(jsonMovieResponse);
+        }
+
+        @Override
+        protected void onPostExecute(MovieModel[] movies) {
+
+            if (movies == null) {
+                return;
+            }
+
+            mMovies = movies;
+            moviesGrid.setAdapter(new MovieArrayAdapter(
+                    getApplicationContext(),
+                    R.layout.movie_grid_item, movies)
+            );
+        }
     }
 
     @Override
