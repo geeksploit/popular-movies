@@ -19,6 +19,7 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.EditText;
 import android.widget.GridView;
+import android.widget.ProgressBar;
 
 import java.net.URL;
 
@@ -30,6 +31,7 @@ import me.geeksploit.popularmovies.utils.PreferencesUtils;
 
 public class MainActivity extends AppCompatActivity {
 
+    private ProgressBar progressBar;
     private GridView moviesGrid;
     private FloatingActionButton fab;
 
@@ -52,6 +54,8 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void initializeViews() {
+        progressBar = findViewById(R.id.movies_progress);
+
         moviesGrid = findViewById(R.id.movies_grid);
         moviesGrid.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
