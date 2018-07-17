@@ -6,6 +6,7 @@
 
     <string name="detail_rating_max">/10</string>
 
+    <string name="mock_overview">Several years after the demise of Jurassic World, a volcanic eruption threatens the remaining dinosaurs on the island of Isla Nublar. Claire Dearing, the former park manager and founder of the Dinosaur Protection Group, recruits Owen Grady to help prevent the extinction of the dinosaurs once again.</string>
     <string name="mock_rating">7.700000</string>
     <string name="mock_title">Jurassic World: Fallen Kingdom</string>
     <string name="mock_release_date">2018-06-06</string>
