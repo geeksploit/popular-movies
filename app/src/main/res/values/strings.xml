@@ -7,6 +7,7 @@
 
     <string name="description_movie_poster">movie poster</string>
 
+    <string name="detail_name">Movie Detail</string>
     <string name="detail_rating_max">/10</string>
 
     <string name="dialog_api_key_title">TMDb API key</string>
