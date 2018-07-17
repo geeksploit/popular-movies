@@ -162,6 +162,15 @@ public class MainActivity extends AppCompatActivity {
         sb.show();
     }
 
+    private void showFetchSuccess(FloatingActionButton fab) {
+        Snackbar.make(fab,
+                PreferencesUtils.isSortModePopular(getApplicationContext()) ?
+                        getString(R.string.message_order_by_popularity) :
+                        getString(R.string.message_order_by_rating),
+                Snackbar.LENGTH_LONG)
+                .show();
+    }
+
     private void setStateFetchingMovies(boolean inProgress) {
         if (inProgress) {
             fab.setEnabled(false);
@@ -199,6 +208,7 @@ public class MainActivity extends AppCompatActivity {
                 return;
             }
 
+            showFetchSuccess(fab);
             mMovies = movies;
             moviesGrid.setAdapter(new MovieArrayAdapter(
                     getApplicationContext(),
