@@ -4,4 +4,10 @@
 
     <string name="description_movie_poster">movie poster</string>
 
+    <string name="detail_rating_max">/10</string>
+
+    <string name="mock_rating">7.700000</string>
+    <string name="mock_title">Jurassic World: Fallen Kingdom</string>
+    <string name="mock_release_date">2018-06-06</string>
+
 </resources>

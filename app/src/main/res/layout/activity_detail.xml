@@ -29,6 +29,47 @@
             app:layout_constraintTop_toTopOf="parent"
             tools:src="@drawable/mock_poster_w342" />
 
+        <TextView
+            android:id="@+id/detail_release_date"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/size_small"
+            android:maxLength="4"
+            android:textAppearance="@style/TextAppearance.AppCompat.Display1"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/detail_guideline"
+            app:layout_constraintTop_toTopOf="@+id/detail_poster"
+            tools:text="@string/mock_release_date" />
+
+        <TextView
+            android:id="@+id/detail_vote_average"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/size_small"
+            android:maxLength="3"
+            android:textAppearance="@style/TextAppearance.AppCompat.Medium"
+            app:layout_constraintLeft_toLeftOf="@id/detail_release_date"
+            app:layout_constraintTop_toBottomOf="@+id/detail_release_date"
+            tools:text="@string/mock_rating" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/detail_rating_max"
+            app:layout_constraintBaseline_toBaselineOf="@+id/detail_vote_average"
+            app:layout_constraintStart_toEndOf="@+id/detail_vote_average" />
+
+        <TextView
+            android:id="@+id/detail_title"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="@dimen/size_medium"
+            android:textAppearance="@style/TextAppearance.AppCompat.Display1"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/detail_poster"
+            tools:text="@string/mock_title" />
+
     </android.support.constraint.ConstraintLayout>
 
 </ScrollView>
