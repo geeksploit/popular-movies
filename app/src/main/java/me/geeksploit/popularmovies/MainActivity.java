@@ -6,6 +6,7 @@ import android.content.Intent;
 import android.content.res.Configuration;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.provider.Settings;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v4.content.ContextCompat;
@@ -91,33 +92,6 @@ public class MainActivity extends AppCompatActivity {
         );
     }
 
-    class FetchMoviesTask extends AsyncTask<String, Void, MovieModel[]> {
-
-        @Override
-        protected MovieModel[] doInBackground(String... params) {
-            String sortMode = params[0];
-            String apiKey = params[1];
-            URL movieQueryUrl = NetworkUtils.buildUrl(sortMode, apiKey);
-            String jsonMovieResponse = NetworkUtils.getResponseFromHttpUrl(movieQueryUrl);
-            return JsonUtils.parseTheMovieDb(jsonMovieResponse);
-        }
-
-        @Override
-        protected void onPostExecute(MovieModel[] movies) {
-
-            if (movies == null) {
-                showFetchError(fab);
-                return;
-            }
-
-            mMovies = movies;
-            moviesGrid.setAdapter(new MovieArrayAdapter(
-                    getApplicationContext(),
-                    R.layout.movie_grid_item, movies)
-            );
-        }
-    }
-
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
@@ -163,7 +137,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void showFetchError(View view) {
-        Snackbar sb = Snackbar.make(view,"", Snackbar.LENGTH_INDEFINITE);
+        Snackbar sb = Snackbar.make(view, "", Snackbar.LENGTH_INDEFINITE);
         if (NetworkUtils.haveNetworkConnection(getApplicationContext())) {
             sb.setText(R.string.error_wrong_api_key);
             sb.setAction(R.string.action_enter_api_key, new View.OnClickListener() {
@@ -172,7 +146,42 @@ public class MainActivity extends AppCompatActivity {
                     showApiKeyDialog(MainActivity.this);
                 }
             });
+        } else {
+            sb.setText(R.string.error_no_internet_connection);
+            sb.setAction(R.string.action_enable_wifi, new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    startActivity(new Intent(Settings.ACTION_WIFI_SETTINGS));
+                }
+            });
         }
         sb.show();
+    }
+
+    class FetchMoviesTask extends AsyncTask<String, Void, MovieModel[]> {
+
+        @Override
+        protected MovieModel[] doInBackground(String... params) {
+            String sortMode = params[0];
+            String apiKey = params[1];
+            URL movieQueryUrl = NetworkUtils.buildUrl(sortMode, apiKey);
+            String jsonMovieResponse = NetworkUtils.getResponseFromHttpUrl(movieQueryUrl);
+            return JsonUtils.parseTheMovieDb(jsonMovieResponse);
+        }
+
+        @Override
+        protected void onPostExecute(MovieModel[] movies) {
+
+            if (movies == null) {
+                showFetchError(fab);
+                return;
+            }
+
+            mMovies = movies;
+            moviesGrid.setAdapter(new MovieArrayAdapter(
+                    getApplicationContext(),
+                    R.layout.movie_grid_item, movies)
+            );
+        }
     }
 }
