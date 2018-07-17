@@ -3,4 +3,5 @@
     <dimen name="size_small">8dp</dimen>
     <dimen name="size_medium">16dp</dimen>
     <dimen name="size_huge">32dp</dimen>
+    <dimen name="grid_column_width">111dp</dimen>
 </resources>
