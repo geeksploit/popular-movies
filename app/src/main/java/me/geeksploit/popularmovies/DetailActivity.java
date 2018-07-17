@@ -3,9 +3,11 @@ package me.geeksploit.popularmovies;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import me.geeksploit.popularmovies.model.MovieModel;
+import me.geeksploit.popularmovies.utils.NetworkUtils;
 
 public class DetailActivity extends AppCompatActivity {
 
@@ -21,6 +23,9 @@ public class DetailActivity extends AppCompatActivity {
 
         final MovieModel movie = (MovieModel) intent.getExtras().get(EXTRA_MOVIE);
         if (movie == null) return;
+
+        ImageView poster = findViewById(R.id.detail_poster);
+        NetworkUtils.loadPoster(this, movie.getPosterPath(), poster, true);
     }
 
     private void setText(int id, String text) {
