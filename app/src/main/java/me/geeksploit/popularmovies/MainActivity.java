@@ -120,6 +120,9 @@ public class MainActivity extends AppCompatActivity {
         if (id == R.id.action_settings) {
             showApiKeyDialog(MainActivity.this);
             return true;
+        } else if (id == R.id.action_about) {
+            showAboutDialog(MainActivity.this);
+            return true;
         }
 
         return super.onOptionsItemSelected(item);
@@ -140,6 +143,20 @@ public class MainActivity extends AppCompatActivity {
                                         apiKey.getText().toString()
                                 );
                                 fetchMoviesData();
+                            }
+                        })
+                .create()
+                .show();
+    }
+
+    private void showAboutDialog(Context context) {
+        new AlertDialog.Builder(context)
+                .setView(getLayoutInflater().inflate(R.layout.dialog_about, null))
+                .setTitle(getString(R.string.dialog_about_title, getString(R.string.app_name)))
+                .setPositiveButton(android.R.string.ok,
+                        new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int id) {
+                                dialog.cancel();
                             }
                         })
                 .create()
