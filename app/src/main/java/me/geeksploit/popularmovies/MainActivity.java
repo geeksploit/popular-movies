@@ -39,6 +39,12 @@ public class MainActivity extends AppCompatActivity {
         initializeViews();
     }
 
+    @Override
+    protected void onStart() {
+        super.onStart();
+        fetchMoviesData();
+    }
+
     private void initializeViews() {
         moviesGrid = findViewById(R.id.movies_grid);
         moviesGrid.setOnItemClickListener(new AdapterView.OnItemClickListener() {
@@ -70,6 +76,13 @@ public class MainActivity extends AppCompatActivity {
                 PreferencesUtils.isSortModePopular(getApplicationContext()) ?
                         R.drawable.sort_popular :
                         R.drawable.sort_top_rated)
+        );
+    }
+
+    private void fetchMoviesData() {
+        new FetchMoviesTask().execute(
+                PreferencesUtils.getSortMode(getApplicationContext()),
+                PreferencesUtils.getApiKey(getApplicationContext())
         );
     }
 
