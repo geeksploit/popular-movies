@@ -162,7 +162,24 @@ public class MainActivity extends AppCompatActivity {
         sb.show();
     }
 
+    private void setStateFetchingMovies(boolean inProgress) {
+        if (inProgress) {
+            fab.setEnabled(false);
+            moviesGrid.setEnabled(false);
+            progressBar.setVisibility(View.VISIBLE);
+        } else {
+            fab.setEnabled(true);
+            moviesGrid.setEnabled(true);
+            progressBar.setVisibility(View.GONE);
+        }
+    }
+
     class FetchMoviesTask extends AsyncTask<String, Void, MovieModel[]> {
+
+        @Override
+        protected void onPreExecute() {
+            setStateFetchingMovies(true);
+        }
 
         @Override
         protected MovieModel[] doInBackground(String... params) {
@@ -175,6 +192,7 @@ public class MainActivity extends AppCompatActivity {
 
         @Override
         protected void onPostExecute(MovieModel[] movies) {
+            setStateFetchingMovies(false);
 
             if (movies == null) {
                 showFetchError(fab);
