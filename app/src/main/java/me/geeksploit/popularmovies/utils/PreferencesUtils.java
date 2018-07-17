@@ -26,4 +26,12 @@ public class PreferencesUtils {
         getPreferences(c).edit().putString(PREF_KEY_API, apiKey).apply();
     }
 
+    public static String getSortMode(Context c) {
+        return getPreferences(c).getString(PREF_KEY_SORT_MODE, PREF_VALUE_SORT_DEFAULT);
+    }
+
+    private static void setSortMode(Context c, String sortMode) {
+        getPreferences(c).edit().putString(PREF_KEY_SORT_MODE, sortMode).apply();
+    }
+
 }
