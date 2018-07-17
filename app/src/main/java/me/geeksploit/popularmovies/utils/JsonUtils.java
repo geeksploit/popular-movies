@@ -9,10 +9,23 @@ import me.geeksploit.popularmovies.model.MovieModel;
 import static me.geeksploit.popularmovies.utils.JsonContractTheMovieDb.OVERVIEW;
 import static me.geeksploit.popularmovies.utils.JsonContractTheMovieDb.POSTER_PATH;
 import static me.geeksploit.popularmovies.utils.JsonContractTheMovieDb.RELEASE_DATE;
+import static me.geeksploit.popularmovies.utils.JsonContractTheMovieDb.RESULTS;
 import static me.geeksploit.popularmovies.utils.JsonContractTheMovieDb.TITLE;
 import static me.geeksploit.popularmovies.utils.JsonContractTheMovieDb.VOTE_AVERAGE;
 
 public final class JsonUtils {
+
+    public static MovieModel[] parseTheMovieDb(String json) {
+        if (json == null) return null;
+
+        try {
+            JSONArray jsonMovies = new JSONObject(json).getJSONArray(RESULTS);
+            return parseMovies(jsonMovies);
+        } catch (JSONException e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
 
     private static MovieModel[] parseMovies(JSONArray jsonMovies) throws JSONException {
         MovieModel[] movies = new MovieModel[jsonMovies.length()];
