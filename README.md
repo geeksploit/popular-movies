@@ -1,5 +1,17 @@
 # Popular Movies
 
+## API key notice
+
+Since the project is in a public repository, measures have been taken to ensure any API keys have been removed from the code.
+It is highly unsafe (and often breaks the Terms of Service) to include API keys in public repos, thus there is no predefined TMDb API key provided.
+
+Since reviewers have been trained to expect this situation, here is how to apply a custom API key:
+ - make sure you are on the Main screen
+ - open application menu
+ - from the dropdown list, choose Settings
+ - enter your API key
+ - tap OK button
+
 # Stage 1
 
 ## Project Overview
