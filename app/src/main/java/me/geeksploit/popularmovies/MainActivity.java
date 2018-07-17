@@ -1,17 +1,21 @@
 package me.geeksploit.popularmovies;
 
+import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.res.Configuration;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.content.ContextCompat;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
+import android.widget.EditText;
 import android.widget.GridView;
 
 import java.net.URL;
@@ -128,9 +132,31 @@ public class MainActivity extends AppCompatActivity {
 
         //noinspection SimplifiableIfStatement
         if (id == R.id.action_settings) {
+            showApiKeyDialog(MainActivity.this);
             return true;
         }
 
         return super.onOptionsItemSelected(item);
+    }
+
+    private void showApiKeyDialog(Context context) {
+        View view = getLayoutInflater().inflate(R.layout.dialog_api_key, null);
+        final EditText apiKey = view.findViewById(R.id.api_key);
+        apiKey.setText(PreferencesUtils.getApiKey(getApplicationContext()));
+        new AlertDialog.Builder(context)
+                .setView(view)
+                .setTitle(R.string.dialog_api_key_title)
+                .setPositiveButton(android.R.string.ok,
+                        new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int id) {
+                                PreferencesUtils.setPrefApiKey(
+                                        getApplicationContext(),
+                                        apiKey.getText().toString()
+                                );
+                                fetchMoviesData();
+                            }
+                        })
+                .create()
+                .show();
     }
 }
