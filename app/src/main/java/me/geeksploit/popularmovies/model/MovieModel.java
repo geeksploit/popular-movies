@@ -1,5 +1,7 @@
 package me.geeksploit.popularmovies.model;
 
+import java.io.Serializable;
+
 /**
  * Holds detailed movie information.
  * <p>
@@ -12,7 +14,8 @@ package me.geeksploit.popularmovies.model;
  * <li>release date
  * </ul>
  */
-public class MovieModel {
+public class MovieModel implements Serializable {
+// TODO: Implement Parcelable in Stage 2
 
     private final double voteAverage;
     private final String posterPath;
