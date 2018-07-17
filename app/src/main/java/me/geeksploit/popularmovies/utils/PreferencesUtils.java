@@ -34,4 +34,12 @@ public class PreferencesUtils {
         getPreferences(c).edit().putString(PREF_KEY_SORT_MODE, sortMode).apply();
     }
 
+    public static void switchSortMode(Context c) {
+        setSortMode(c, isSortModePopular(c) ? PREF_VALUE_SORT_TOP_RATED : PREF_VALUE_SORT_POPULAR);
+    }
+
+    public static boolean isSortModePopular(Context c) {
+        return PREF_VALUE_SORT_POPULAR.equals(getSortMode(c));
+    }
+
 }
