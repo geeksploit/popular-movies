@@ -3,7 +3,6 @@ package me.geeksploit.popularmovies;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.content.res.Configuration;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.provider.Settings;
@@ -12,18 +11,17 @@ import android.support.design.widget.Snackbar;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.AdapterView;
 import android.widget.EditText;
-import android.widget.GridView;
-import android.widget.ProgressBar;
 
 import java.net.URL;
+import java.util.Arrays;
 
-import me.geeksploit.popularmovies.adapter.MovieArrayAdapter;
+import me.geeksploit.popularmovies.adapter.MovieGalleryAdapter;
 import me.geeksploit.popularmovies.model.MovieModel;
 import me.geeksploit.popularmovies.utils.JsonUtils;
 import me.geeksploit.popularmovies.utils.NetworkUtils;
@@ -31,11 +29,9 @@ import me.geeksploit.popularmovies.utils.PreferencesUtils;
 
 public class MainActivity extends AppCompatActivity {
 
-    private ProgressBar progressBar;
-    private GridView moviesGrid;
+    private View progressBar;
+    private MovieGalleryAdapter movieGalleryAdapter;
     private FloatingActionButton fab;
-
-    private MovieModel[] mMovies = new MovieModel[]{};
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -56,19 +52,20 @@ public class MainActivity extends AppCompatActivity {
     private void initializeViews() {
         progressBar = findViewById(R.id.movies_progress);
 
-        moviesGrid = findViewById(R.id.movies_grid);
-        moviesGrid.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> adapterView, View view, int position, long l) {
-                Intent movieDetail = new Intent(MainActivity.this, DetailActivity.class);
-                movieDetail.putExtra(DetailActivity.EXTRA_MOVIE, mMovies[position]);
-                startActivity(movieDetail);
-            }
-        });
-        if (getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE)
-            moviesGrid.setNumColumns(5);
-        else
-            moviesGrid.setNumColumns(3);
+        movieGalleryAdapter = new MovieGalleryAdapter(
+                getApplicationContext(),
+                new MovieGalleryAdapter.OnClickListener() {
+                    @Override
+                    public void onClick(MovieModel movie) {
+                        Intent movieDetail = new Intent(MainActivity.this, DetailActivity.class);
+                        movieDetail.putExtra(DetailActivity.EXTRA_MOVIE, movie);
+                        startActivity(movieDetail);
+                    }
+                }
+        );
+
+        RecyclerView movieGallery = findViewById(R.id.movie_gallery);
+        movieGallery.setAdapter(movieGalleryAdapter);
 
         fab = findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
@@ -197,11 +194,9 @@ public class MainActivity extends AppCompatActivity {
     private void setStateFetchingMovies(boolean inProgress) {
         if (inProgress) {
             fab.setEnabled(false);
-            moviesGrid.setEnabled(false);
             progressBar.setVisibility(View.VISIBLE);
         } else {
             fab.setEnabled(true);
-            moviesGrid.setEnabled(true);
             progressBar.setVisibility(View.GONE);
         }
     }
@@ -228,15 +223,10 @@ public class MainActivity extends AppCompatActivity {
 
             if (movies == null) {
                 showFetchError(fab);
-                return;
+            } else {
+                showFetchSuccess(fab);
+                movieGalleryAdapter.resetData(Arrays.asList(movies));
             }
-
-            showFetchSuccess(fab);
-            mMovies = movies;
-            moviesGrid.setAdapter(new MovieArrayAdapter(
-                    getApplicationContext(),
-                    R.layout.movie_grid_item, movies)
-            );
         }
     }
 }
