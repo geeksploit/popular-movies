@@ -3,4 +3,5 @@
     <color name="colorPrimary">#081c24</color>
     <color name="colorPrimaryDark">#000000</color>
     <color name="colorAccent">#01d277</color>
+    <color name="progress_overlay_background">#a000</color>
 </resources>
