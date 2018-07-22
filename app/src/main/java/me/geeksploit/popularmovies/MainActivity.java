@@ -214,11 +214,6 @@ public class MainActivity extends AppCompatActivity {
             String apiKey = params[1];
             URL movieQueryUrl = NetworkUtils.buildUrl(sortMode, apiKey);
             String jsonMovieResponse = NetworkUtils.getResponseFromHttpUrl(movieQueryUrl);
-            try {
-                Thread.sleep(1000);
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            }
             return JsonUtils.parseTheMovieDb(jsonMovieResponse);
         }
 
