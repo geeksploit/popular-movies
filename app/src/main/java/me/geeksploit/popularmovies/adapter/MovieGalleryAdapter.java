@@ -48,6 +48,12 @@ public class MovieGalleryAdapter extends RecyclerView.Adapter<MovieGalleryAdapte
         return movieList.size();
     }
 
+    public void resetData(List<MovieModel> newData) {
+        movieList.clear();
+        movieList.addAll(newData);
+        notifyDataSetChanged();
+    }
+
     public interface OnClickListener {
         void onClick(MovieModel movie);
     }
