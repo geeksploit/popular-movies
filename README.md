@@ -42,3 +42,22 @@ By building this app, you will demonstrate your understanding of the foundationa
 - You will fetch data from the Internet with theMovieDB API.
 - You will use adapters and custom list layouts to populate list views.
 - You will incorporate libraries to simplify the amount of code you need to write
+
+# Stage 2
+
+## Project Overview
+
+In this second and final stage, you’ll add additional functionality to the app you built in Stage 1.
+
+You’ll add more information to your movie details view to allow users to:
+- view and play trailers (either in the youtube app or a web browser)
+- read reviews of a selected movie
+- mark a movie as a favorite in the details view by tapping a button (star).
+
+You'll create a database to store the names and ids of the user's favorite movies (and optionally, the rest of the information needed to display their favorites collection while offline).
+
+You’ll modify the existing sorting criteria for the main view to include an additional pivot to show their favorites collection.
+
+## What Will I Learn After Stage 2?
+
+You will build a fully featured application that looks and feels natural on the latest Android operating system.
