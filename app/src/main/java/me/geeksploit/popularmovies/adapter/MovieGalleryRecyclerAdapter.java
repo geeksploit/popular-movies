@@ -12,6 +12,7 @@ import java.util.List;
 
 import me.geeksploit.popularmovies.R;
 import me.geeksploit.popularmovies.model.MovieModel;
+import me.geeksploit.popularmovies.utils.NetworkUtils;
 
 public class MovieGalleryRecyclerAdapter extends RecyclerView.Adapter<MovieGalleryRecyclerAdapter.MovieGalleryViewHolder> {
 
@@ -33,7 +34,10 @@ public class MovieGalleryRecyclerAdapter extends RecyclerView.Adapter<MovieGalle
 
     @Override
     public void onBindViewHolder(@NonNull MovieGalleryViewHolder holder, int position) {
-
+        NetworkUtils.loadPoster(context,
+                movieList.get(position).getPosterPath(),
+                holder.moviePoster,
+                true);
     }
 
     @Override
