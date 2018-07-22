@@ -37,6 +37,7 @@ public class MovieGalleryAdapter extends RecyclerView.Adapter<MovieGalleryAdapte
 
     @Override
     public void onBindViewHolder(@NonNull MovieGalleryViewHolder holder, int position) {
+        holder.moviePoster.setContentDescription(movieList.get(position).getTitle());
         NetworkUtils.loadPoster(context,
                 movieList.get(position).getPosterPath(),
                 holder.moviePoster,
