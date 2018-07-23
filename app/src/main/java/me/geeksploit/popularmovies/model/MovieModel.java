@@ -22,17 +22,20 @@ public class MovieModel implements Serializable {
     private final String title;
     private final String overview;
     private final String releaseDate;
+    private final String id;
 
     public MovieModel(double voteAverage,
                       String posterPath,
                       String title,
                       String overview,
-                      String releaseDate) {
+                      String releaseDate,
+                      String id) {
         this.voteAverage = voteAverage;
         this.posterPath = posterPath;
         this.title = title;
         this.overview = overview;
         this.releaseDate = releaseDate;
+        this.id = id;
     }
 
     public double getVoteAverage() {
@@ -55,4 +58,7 @@ public class MovieModel implements Serializable {
         return releaseDate;
     }
 
+    public String getId() {
+        return id;
+    }
 }
