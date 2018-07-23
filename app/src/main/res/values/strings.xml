@@ -19,6 +19,7 @@
 
     <string name="error_wrong_api_key">Please check API key</string>
     <string name="error_no_internet_connection">Please check Internet connection</string>
+    <string name="error_not_implemented" translatable="false">not implemented (%s)</string>
 
     <string name="message_order_by_popularity">Order by popularity</string>
     <string name="message_order_by_rating">Order by rating</string>
