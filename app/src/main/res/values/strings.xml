@@ -11,6 +11,7 @@
 
     <string name="detail_name">Movie Detail</string>
     <string name="detail_rating_max">/10</string>
+    <string name="detail_reviews_empty">There are no reviews for %s</string>
 
     <string name="dialog_about_title">About %s</string>
     <string name="dialog_about_tmdb_attribution">This product uses the TMDb API but is not endorsed or certified by TMDb.</string>
@@ -19,6 +20,7 @@
 
     <string name="error_wrong_api_key">Please check API key</string>
     <string name="error_no_internet_connection">Please check Internet connection</string>
+    <string name="error_not_implemented" translatable="false">not implemented (%s)</string>
 
     <string name="message_order_by_popularity">Order by popularity</string>
     <string name="message_order_by_rating">Order by rating</string>
@@ -27,5 +29,9 @@
     <string name="mock_rating">7.700000</string>
     <string name="mock_title">Jurassic World: Fallen Kingdom</string>
     <string name="mock_release_date">2018-06-06</string>
+
+    <string name="title_overview">Overview</string>
+    <string name="title_trailers">Trailers</string>
+    <string name="title_reviews">Reviews</string>
 
 </resources>

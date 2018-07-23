@@ -8,5 +8,10 @@ final class JsonContractTheMovieDb {
     final static String TITLE = "title";
     final static String OVERVIEW = "overview";
     final static String RELEASE_DATE = "release_date";
+    final static String MOVIE_ID = "id";
+
+    final static String REVIEW_AUTHOR = "author";
+    final static String REVIEW_CONTENT = "content";
+    final static String REVIEW_URL = "url";
 }
 
