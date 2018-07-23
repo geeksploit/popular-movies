@@ -12,6 +12,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.MenuItem;
 
 import me.geeksploit.popularmovies.fragments.DetailsFragment;
+import me.geeksploit.popularmovies.fragments.ReviewsFragment;
 import me.geeksploit.popularmovies.model.MovieModel;
 
 public class DetailActivity extends AppCompatActivity implements DetailsFragment.OnClickFavoritesListener {
@@ -30,6 +31,9 @@ public class DetailActivity extends AppCompatActivity implements DetailsFragment
             switch (item.getItemId()) {
                 case R.id.navigation_overview:
                     targetFragment = DetailsFragment.newInstance(mMovie);
+                    break;
+                case R.id.navigation_reviews:
+                    targetFragment = ReviewsFragment.newInstance(mMovie);
                     break;
                 default:
                     throw new UnsupportedOperationException(getString(R.string.error_not_implemented, item));

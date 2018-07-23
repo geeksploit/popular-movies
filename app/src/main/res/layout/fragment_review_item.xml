@@ -6,6 +6,7 @@
     android:orientation="vertical"
     android:paddingLeft="@dimen/size_medium"
     android:paddingRight="@dimen/size_medium"
+    tools:context="fragments.ReviewsFragment"
     tools:showIn="@layout/fragment_review_list">
 
     <TextView
