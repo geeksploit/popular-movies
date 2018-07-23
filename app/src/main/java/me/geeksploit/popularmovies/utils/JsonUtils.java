@@ -7,6 +7,7 @@ import org.json.JSONObject;
 import me.geeksploit.popularmovies.model.MovieModel;
 import me.geeksploit.popularmovies.model.ReviewModel;
 
+import static me.geeksploit.popularmovies.utils.JsonContractTheMovieDb.MOVIE_ID;
 import static me.geeksploit.popularmovies.utils.JsonContractTheMovieDb.OVERVIEW;
 import static me.geeksploit.popularmovies.utils.JsonContractTheMovieDb.POSTER_PATH;
 import static me.geeksploit.popularmovies.utils.JsonContractTheMovieDb.RELEASE_DATE;
@@ -52,8 +53,8 @@ public final class JsonUtils {
                     jsonMovie.getString(POSTER_PATH),
                     jsonMovie.getString(TITLE),
                     jsonMovie.getString(OVERVIEW),
-                    jsonMovie.getString(RELEASE_DATE)
-            );
+                    jsonMovie.getString(RELEASE_DATE),
+                    jsonMovie.getString(MOVIE_ID));
         }
         return movies;
     }
