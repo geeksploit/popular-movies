@@ -28,4 +28,8 @@
     <string name="mock_title">Jurassic World: Fallen Kingdom</string>
     <string name="mock_release_date">2018-06-06</string>
 
+    <string name="title_overview">Overview</string>
+    <string name="title_trailers">Trailers</string>
+    <string name="title_reviews">Reviews</string>
+
 </resources>
