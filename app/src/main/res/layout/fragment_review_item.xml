@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:paddingLeft="@dimen/size_medium"
+    android:paddingRight="@dimen/size_medium"
+    tools:showIn="@layout/fragment_review_list">
+
+    <TextView
+        android:id="@+id/review_item_author"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/size_medium"
+        android:layout_marginBottom="@dimen/size_small"
+        android:textAppearance="?attr/textAppearanceListItem"
+        android:textStyle="bold"
+        tools:text="@tools:sample/lorem" />
+
+    <TextView
+        android:id="@+id/review_item_content"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="@dimen/size_medium"
+        android:textAppearance="?attr/textAppearanceListItem"
+        tools:text="@tools:sample/lorem/random" />
+
+</LinearLayout>
