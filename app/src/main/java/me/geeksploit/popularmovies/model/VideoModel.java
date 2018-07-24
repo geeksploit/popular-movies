@@ -13,4 +13,16 @@ public final class VideoModel {
         this.name = name;
         this.site = site;
     }
+
+    public String getKey() {
+        return key;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public String getSite() {
+        return site;
+    }
 }
