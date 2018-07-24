@@ -51,6 +51,10 @@ public class VideoRecyclerAdapter extends RecyclerView.Adapter<VideoRecyclerAdap
         return mValues.size();
     }
 
+    public void addData(VideoModel value) {
+        mValues.add(value);
+    }
+
     public class ViewHolder extends RecyclerView.ViewHolder {
         final View mView;
         final TextView mNameView;
