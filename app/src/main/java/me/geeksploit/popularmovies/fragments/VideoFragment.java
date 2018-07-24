@@ -27,6 +27,7 @@ import me.geeksploit.popularmovies.model.MovieModel;
 import me.geeksploit.popularmovies.model.VideoModel;
 import me.geeksploit.popularmovies.utils.JsonUtils;
 import me.geeksploit.popularmovies.utils.NetworkUtils;
+import me.geeksploit.popularmovies.utils.PreferencesUtils;
 
 /**
  * A fragment representing a list of trailer videos.
@@ -75,6 +76,7 @@ public class VideoFragment extends Fragment {
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_video_list, container, false);
         initializeRecyclerView((RecyclerView) view);
+        new FetchVideosTask().execute(mMovie.getId(), PreferencesUtils.getApiKey(getContext()));
         return view;
     }
 
