@@ -3,6 +3,7 @@ package me.geeksploit.popularmovies.fragments;
 import android.content.Context;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.GridLayoutManager;
@@ -22,6 +23,7 @@ import java.util.List;
 
 import me.geeksploit.popularmovies.R;
 import me.geeksploit.popularmovies.adapter.VideoRecyclerAdapter;
+import me.geeksploit.popularmovies.model.MovieModel;
 import me.geeksploit.popularmovies.model.VideoModel;
 import me.geeksploit.popularmovies.utils.JsonUtils;
 import me.geeksploit.popularmovies.utils.NetworkUtils;
@@ -34,8 +36,10 @@ import me.geeksploit.popularmovies.utils.NetworkUtils;
  */
 public class VideoFragment extends Fragment {
 
+    private static final String ARG_MOVIE = "movie";
     private static final String ARG_COLUMN_COUNT = "column-count";
 
+    private MovieModel mMovie;
     private int mColumnCount = 1;
     private OnClickVideoItemListener mListener;
     private VideoRecyclerAdapter mVideoAdapter;
@@ -47,9 +51,10 @@ public class VideoFragment extends Fragment {
     public VideoFragment() {
     }
 
-    public static VideoFragment newInstance(int columnCount) {
+    public static VideoFragment newInstance(MovieModel movie, int columnCount) {
         VideoFragment fragment = new VideoFragment();
         Bundle args = new Bundle();
+        args.putSerializable(ARG_MOVIE, movie);
         args.putInt(ARG_COLUMN_COUNT, columnCount);
         fragment.setArguments(args);
         return fragment;
@@ -60,6 +65,7 @@ public class VideoFragment extends Fragment {
         super.onCreate(savedInstanceState);
 
         if (getArguments() != null) {
+            mMovie = (MovieModel) getArguments().getSerializable(ARG_MOVIE);
             mColumnCount = getArguments().getInt(ARG_COLUMN_COUNT);
         }
     }
@@ -147,6 +153,12 @@ public class VideoFragment extends Fragment {
 
         @Override
         protected void onPostExecute(List<VideoModel> models) {
+            if (mVideoAdapter.getItemCount() == 0) {
+                Snackbar.make(getView(),
+                        getString(R.string.detail_videos_empty, mMovie.getTitle()),
+                        Snackbar.LENGTH_SHORT)
+                        .show();
+            }
         }
     }
 }
