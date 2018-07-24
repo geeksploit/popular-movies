@@ -84,12 +84,10 @@ public class VideoFragment extends Fragment {
         Context context = recyclerView.getContext();
         if (mColumnCount <= 1) {
             recyclerView.setLayoutManager(new LinearLayoutManager(context));
+            recyclerView.addItemDecoration(new DividerItemDecoration(context, DividerItemDecoration.VERTICAL));
         } else {
             recyclerView.setLayoutManager(new GridLayoutManager(context, mColumnCount));
         }
-        recyclerView.addItemDecoration(new DividerItemDecoration(context,
-                DividerItemDecoration.VERTICAL)
-        );
 
         mVideoAdapter = new VideoRecyclerAdapter(new ArrayList<VideoModel>(), mListener);
         recyclerView.setAdapter(mVideoAdapter);
