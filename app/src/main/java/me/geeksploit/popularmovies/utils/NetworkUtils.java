@@ -19,6 +19,7 @@ import me.geeksploit.popularmovies.R;
 public final class NetworkUtils {
 
     private static final String TMDB_MOVIES_URL_BASE = "http://api.themoviedb.org/3/movie";
+    private static final String URL_BASE_YOUTUBE = "https://youtube.com/watch";
 
     private static final String TMDB_POSTER_URL_BASE = "http://image.tmdb.org/t/p";
     private static final String TMDB_POSTER_URL_PART_LORES = "w185";
@@ -28,6 +29,9 @@ public final class NetworkUtils {
     private static final String URL_PART_VIDEOS = "videos";
 
     private static final String PARAM_API_KEY = "api_key";
+    private static final String PARAM_VIDEO = "v";
+
+    private static final String SITE_YOUTUBE = "YouTube";
 
     public static URL buildUrl(String sortMode, String apiKey) {
         // TODO: should url building process rely on sortMode given as a parameter?
@@ -61,6 +65,26 @@ public final class NetworkUtils {
                 .build()
                 .toString()
         );
+    }
+
+    /**
+     * Creates a Uri which refers to a trailer video.
+     *
+     * @param site video-sharing platform as per <a href="https://developers.themoviedb.org/3/movies/get-movie-videos">TMDb API</a>
+     * @param key  site-specific video identifier
+     * @return a data Uri to be used with the Intent.ACTION_VIEW
+     * @throws UnsupportedOperationException in case an unknown site has been specified
+     */
+    public static Uri buildUriViewVideo(String site, String key) throws UnsupportedOperationException {
+        switch (site) {
+            case SITE_YOUTUBE:
+                return Uri.parse(URL_BASE_YOUTUBE)
+                        .buildUpon()
+                        .appendQueryParameter(PARAM_VIDEO, key)
+                        .build();
+            default:
+                throw new UnsupportedOperationException(String.format("unknown site (%s)", site));
+        }
     }
 
     public static String getResponseFromHttpUrl(URL url) {
