@@ -10,12 +10,14 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
 import android.view.MenuItem;
+import android.widget.Toast;
 
 import me.geeksploit.popularmovies.fragments.DetailsFragment;
 import me.geeksploit.popularmovies.fragments.ReviewsFragment;
 import me.geeksploit.popularmovies.fragments.VideoFragment;
 import me.geeksploit.popularmovies.model.MovieModel;
 import me.geeksploit.popularmovies.model.VideoModel;
+import me.geeksploit.popularmovies.utils.NetworkUtils;
 
 public class DetailActivity extends AppCompatActivity implements DetailsFragment.OnClickFavoritesListener,
         VideoFragment.OnClickVideoItemListener {
@@ -80,6 +82,11 @@ public class DetailActivity extends AppCompatActivity implements DetailsFragment
 
     @Override
     public void onClickVideoItem(VideoModel item) {
-        // TODO: handle trailer video click
+        try {
+            Uri uri = NetworkUtils.buildUriViewVideo(item.getSite(), item.getKey());
+            startActivity(new Intent(Intent.ACTION_VIEW, uri));
+        } catch (UnsupportedOperationException e) {
+            Toast.makeText(this, e.getMessage(), Toast.LENGTH_LONG).show();
+        }
     }
 }
