@@ -13,6 +13,7 @@
     <string name="detail_name">Movie Detail</string>
     <string name="detail_rating_max">/10</string>
     <string name="detail_reviews_empty">There are no reviews for %s</string>
+    <string name="detail_videos_empty">There are no videos for %s</string>
 
     <string name="dialog_about_title">About %s</string>
     <string name="dialog_about_tmdb_attribution">This product uses the TMDb API but is not endorsed or certified by TMDb.</string>
