@@ -1,5 +1,8 @@
 package me.geeksploit.popularmovies.model;
 
+/**
+ * @see <span>The Movie Database API / <a href='https://developers.themoviedb.org/3/movies/get-movie-videos'>Get Videos</a></span>
+ */
 public final class VideoModel {
 
     private final String key;
