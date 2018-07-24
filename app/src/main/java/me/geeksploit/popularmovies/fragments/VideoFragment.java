@@ -2,7 +2,9 @@ package me.geeksploit.popularmovies.fragments;
 
 import android.app.Fragment;
 import android.content.Context;
+import android.os.AsyncTask;
 import android.os.Bundle;
+import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -10,11 +12,19 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import org.json.JSONArray;
+import org.json.JSONException;
+
+import java.net.MalformedURLException;
+import java.net.URL;
 import java.util.ArrayList;
+import java.util.List;
 
 import me.geeksploit.popularmovies.R;
 import me.geeksploit.popularmovies.adapter.VideoRecyclerAdapter;
 import me.geeksploit.popularmovies.model.VideoModel;
+import me.geeksploit.popularmovies.utils.JsonUtils;
+import me.geeksploit.popularmovies.utils.NetworkUtils;
 
 /**
  * A fragment representing a list of trailer videos.
@@ -28,6 +38,7 @@ public class VideoFragment extends Fragment {
 
     private int mColumnCount = 1;
     private OnClickVideoItemListener mListener;
+    private VideoRecyclerAdapter mVideoAdapter;
 
     /**
      * Mandatory empty constructor for the fragment manager to instantiate the
@@ -68,7 +79,12 @@ public class VideoFragment extends Fragment {
         } else {
             recyclerView.setLayoutManager(new GridLayoutManager(context, mColumnCount));
         }
-        recyclerView.setAdapter(new VideoRecyclerAdapter(new ArrayList<VideoModel>(), mListener));
+        recyclerView.addItemDecoration(new DividerItemDecoration(context,
+                DividerItemDecoration.VERTICAL)
+        );
+
+        mVideoAdapter = new VideoRecyclerAdapter(new ArrayList<VideoModel>(), mListener);
+        recyclerView.setAdapter(mVideoAdapter);
     }
 
 
@@ -97,5 +113,40 @@ public class VideoFragment extends Fragment {
      */
     public interface OnClickVideoItemListener {
         void onClickVideoItem(VideoModel item);
+    }
+
+    class FetchVideosTask extends AsyncTask<String, VideoModel, List<VideoModel>> {
+
+        @Override
+        protected List<VideoModel> doInBackground(String... params) {
+            String movieId = params[0];
+            String apiKey = params[1];
+
+            List<VideoModel> models = null;
+            try {
+                URL queryUrl = NetworkUtils.buildUrlVideos(movieId, apiKey);
+                String response = NetworkUtils.getResponseFromHttpUrl(queryUrl);
+                JSONArray results = JsonUtils.getResults(response);
+
+                models = new ArrayList<>(results.length());
+                for (int i = 0; i < results.length(); i++) {
+                    models.add(JsonUtils.parseVideo(results.getJSONObject(i)));
+                    publishProgress(models.get(i));
+                }
+            } catch (JSONException | MalformedURLException e) {
+                e.printStackTrace();
+            }
+            return models;
+        }
+
+        @Override
+        protected void onProgressUpdate(VideoModel... values) {
+            mVideoAdapter.addData(values[0]);
+            mVideoAdapter.notifyDataSetChanged();
+        }
+
+        @Override
+        protected void onPostExecute(List<VideoModel> models) {
+        }
     }
 }
