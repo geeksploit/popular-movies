@@ -13,9 +13,12 @@ import android.view.MenuItem;
 
 import me.geeksploit.popularmovies.fragments.DetailsFragment;
 import me.geeksploit.popularmovies.fragments.ReviewsFragment;
+import me.geeksploit.popularmovies.fragments.VideoFragment;
 import me.geeksploit.popularmovies.model.MovieModel;
+import me.geeksploit.popularmovies.model.VideoModel;
 
-public class DetailActivity extends AppCompatActivity implements DetailsFragment.OnClickFavoritesListener {
+public class DetailActivity extends AppCompatActivity implements DetailsFragment.OnClickFavoritesListener,
+        VideoFragment.OnClickVideoItemListener {
 
     public static final String EXTRA_MOVIE = "MOVIE_DATA";
 
@@ -31,6 +34,9 @@ public class DetailActivity extends AppCompatActivity implements DetailsFragment
             switch (item.getItemId()) {
                 case R.id.navigation_overview:
                     targetFragment = DetailsFragment.newInstance(mMovie);
+                    break;
+                case R.id.navigation_trailers:
+                    targetFragment = VideoFragment.newInstance(mMovie, 1);
                     break;
                 case R.id.navigation_reviews:
                     targetFragment = ReviewsFragment.newInstance(mMovie);
@@ -70,5 +76,10 @@ public class DetailActivity extends AppCompatActivity implements DetailsFragment
     @Override
     public void onClickFavorites(Uri uri) {
         // TODO: handle favorites button click
+    }
+
+    @Override
+    public void onClickVideoItem(VideoModel item) {
+        // TODO: handle trailer video click
     }
 }

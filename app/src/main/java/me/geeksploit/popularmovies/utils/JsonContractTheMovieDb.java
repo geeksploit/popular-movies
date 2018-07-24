@@ -1,6 +1,7 @@
 package me.geeksploit.popularmovies.utils;
 
 final class JsonContractTheMovieDb {
+
     final static String RESULTS = "results";
 
     final static String VOTE_AVERAGE = "vote_average";
@@ -13,5 +14,9 @@ final class JsonContractTheMovieDb {
     final static String REVIEW_AUTHOR = "author";
     final static String REVIEW_CONTENT = "content";
     final static String REVIEW_URL = "url";
+
+    final static String VIDEO_KEY = "key";
+    final static String VIDEO_NAME = "name";
+    final static String VIDEO_SITE = "site";
 }
 

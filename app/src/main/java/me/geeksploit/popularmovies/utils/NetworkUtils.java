@@ -25,6 +25,7 @@ public final class NetworkUtils {
     private static final String TMDB_POSTER_URL_PART_HIRES = "w342";
 
     private static final String URL_PART_REVIEWS = "reviews";
+    private static final String URL_PART_VIDEOS = "videos";
 
     private static final String PARAM_API_KEY = "api_key";
 
@@ -46,6 +47,16 @@ public final class NetworkUtils {
         return new URL(Uri.parse(TMDB_MOVIES_URL_BASE).buildUpon()
                 .appendPath(String.valueOf(movieId))
                 .appendPath(URL_PART_REVIEWS)
+                .appendQueryParameter(PARAM_API_KEY, apiKey)
+                .build()
+                .toString()
+        );
+    }
+
+    public static URL buildUrlVideos(String movieId, String apiKey) throws MalformedURLException {
+        return new URL(Uri.parse(TMDB_MOVIES_URL_BASE).buildUpon()
+                .appendPath(movieId)
+                .appendPath(URL_PART_VIDEOS)
                 .appendQueryParameter(PARAM_API_KEY, apiKey)
                 .build()
                 .toString()
