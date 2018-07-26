@@ -29,6 +29,7 @@ public class DetailsFragment extends Fragment {
     private MovieModel movie;
 
     private OnClickFavoritesListener mListener;
+    private TextView favoritesButton;
 
     /**
      * Mandatory empty constructor for the fragment manager to instantiate the
@@ -65,6 +66,14 @@ public class DetailsFragment extends Fragment {
         setText(view, R.id.detail_release_date, movie.getReleaseDate());
         setText(view, R.id.detail_vote_average, String.valueOf(movie.getVoteAverage()));
         setText(view, R.id.detail_overview, movie.getOverview());
+
+        favoritesButton = view.findViewById(R.id.detail_mark_favorite);
+        favoritesButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                onClickFavorites(null);
+            }
+        });
 
         return view;
     }
