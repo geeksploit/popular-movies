@@ -59,6 +59,19 @@
             app:layout_constraintBaseline_toBaselineOf="@+id/detail_vote_average"
             app:layout_constraintStart_toEndOf="@+id/detail_vote_average" />
 
+        <Button
+            android:id="@+id/detail_mark_favorite"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/size_medium"
+            android:background="@color/colorAccent"
+            android:paddingEnd="@dimen/size_small"
+            android:paddingStart="@dimen/size_small"
+            android:text="@string/button_favorite_mark"
+            android:textColor="@color/colorPrimaryDark"
+            app:layout_constraintLeft_toLeftOf="@id/detail_release_date"
+            app:layout_constraintTop_toBottomOf="@id/detail_vote_average" />
+
         <TextView
             android:id="@+id/detail_title"
             android:layout_width="match_parent"

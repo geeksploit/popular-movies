@@ -6,6 +6,9 @@
     <string name="action_enter_api_key">Enter KEY</string>
     <string name="action_enable_wifi">Enable Wi-Fi</string>
 
+    <string name="button_favorite_mark">mark\nfavorite</string>
+    <string name="button_favorite_remove">remove\nfavorite</string>
+
     <string name="description_movie_poster">movie poster</string>
     <string name="description_tmdb_logo">The Movie Database (TMDb) logo</string>
     <string name="description_video_play">play video</string>
