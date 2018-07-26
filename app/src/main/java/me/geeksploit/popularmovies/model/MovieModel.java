@@ -1,19 +1,23 @@
 package me.geeksploit.popularmovies.model;
 
+import android.arch.persistence.room.Entity;
+import android.arch.persistence.room.PrimaryKey;
+import android.support.annotation.NonNull;
+
 import java.io.Serializable;
 
 /**
  * Holds detailed movie information.
- * <p>
- * Stage 1 requirements:
  * <ul>
  * <li>title
  * <li>movie poster image thumbnail
  * <li>a plot synopsis (called overview in the api)
  * <li>user rating (called vote_average in the api)
  * <li>release date
+ * <li>movie id
  * </ul>
  */
+@Entity(tableName = "movie")
 public class MovieModel implements Serializable {
 // TODO: Implement Parcelable in Stage 2
 
@@ -22,6 +26,8 @@ public class MovieModel implements Serializable {
     private final String title;
     private final String overview;
     private final String releaseDate;
+    @NonNull
+    @PrimaryKey
     private final String id;
 
     public MovieModel(double voteAverage,
@@ -29,7 +35,7 @@ public class MovieModel implements Serializable {
                       String title,
                       String overview,
                       String releaseDate,
-                      String id) {
+                      @NonNull String id) {
         this.voteAverage = voteAverage;
         this.posterPath = posterPath;
         this.title = title;
@@ -58,6 +64,7 @@ public class MovieModel implements Serializable {
         return releaseDate;
     }
 
+    @NonNull
     public String getId() {
         return id;
     }
