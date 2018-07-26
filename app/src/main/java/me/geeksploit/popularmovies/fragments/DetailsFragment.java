@@ -1,10 +1,14 @@
 package me.geeksploit.popularmovies.fragments;
 
+import android.arch.lifecycle.Observer;
+import android.arch.lifecycle.ViewModelProviders;
 import android.content.Context;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -12,6 +16,9 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import me.geeksploit.popularmovies.R;
+import me.geeksploit.popularmovies.database.AppDatabase;
+import me.geeksploit.popularmovies.model.DetailViewModel;
+import me.geeksploit.popularmovies.model.DetailViewModelFactory;
 import me.geeksploit.popularmovies.model.MovieModel;
 import me.geeksploit.popularmovies.utils.NetworkUtils;
 
@@ -24,12 +31,15 @@ import me.geeksploit.popularmovies.utils.NetworkUtils;
  */
 public class DetailsFragment extends Fragment {
 
+    private static final String TAG = "database";
     private static final String ARG_MOVIE = "movie";
 
     private MovieModel movie;
 
     private OnClickFavoritesListener mListener;
     private TextView favoritesButton;
+    private boolean isFavorite;
+    private DetailViewModel viewModel;
 
     /**
      * Mandatory empty constructor for the fragment manager to instantiate the
@@ -52,6 +62,26 @@ public class DetailsFragment extends Fragment {
         if (getArguments() != null) {
             movie = (MovieModel) getArguments().getSerializable(ARG_MOVIE);
         }
+        setupViewModel();
+    }
+
+    private void setupViewModel() {
+        viewModel = ViewModelProviders.of(this,
+                new DetailViewModelFactory(
+                        AppDatabase.getInstance(getContext()),
+                        movie.getId()))
+                .get(DetailViewModel.class);
+        viewModel.getMovie().observe(this, new Observer<MovieModel>() {
+            @Override
+            public void onChanged(@Nullable MovieModel movie) {
+                isFavorite = movie != null;
+                favoritesButton.setText(isFavorite ?
+                        getString(R.string.button_favorite_remove) :
+                        getString(R.string.button_favorite_mark)
+                );
+                Log.d(TAG, "Updating list of tasks from LiveData in ViewModel, favorite " + isFavorite);
+            }
+        });
     }
 
     @Override
@@ -89,6 +119,11 @@ public class DetailsFragment extends Fragment {
     }
 
     public void onClickFavorites(Uri uri) {
+        if (isFavorite)
+            viewModel.favoriteRemove(movie);
+        else
+            viewModel.favoriteAdd(movie);
+
         if (mListener != null) {
             mListener.onClickFavorites(uri);
         }
