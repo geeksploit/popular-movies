@@ -1,13 +1,16 @@
 package me.geeksploit.popularmovies;
 
+import android.arch.lifecycle.LiveData;
+import android.arch.lifecycle.Observer;
+import android.arch.lifecycle.ViewModelProviders;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.os.AsyncTask;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.provider.Settings;
+import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AlertDialog;
@@ -18,12 +21,11 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 
-import java.net.URL;
-import java.util.Arrays;
+import java.util.List;
 
 import me.geeksploit.popularmovies.adapter.MovieGalleryAdapter;
+import me.geeksploit.popularmovies.model.MainViewModel;
 import me.geeksploit.popularmovies.model.MovieModel;
-import me.geeksploit.popularmovies.utils.JsonUtils;
 import me.geeksploit.popularmovies.utils.NetworkUtils;
 import me.geeksploit.popularmovies.utils.PreferencesUtils;
 
@@ -32,7 +34,10 @@ public class MainActivity extends AppCompatActivity
 
     private View progressBar;
     private MovieGalleryAdapter movieGalleryAdapter;
+    private LiveData<List<MovieModel>> movieSource;
     private FloatingActionButton fab;
+    private MainViewModel model;
+    private boolean haveNetworkConnection = true;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -43,7 +48,39 @@ public class MainActivity extends AppCompatActivity
         PreferenceManager.getDefaultSharedPreferences(this)
                 .registerOnSharedPreferenceChangeListener(this);
         initializeViews();
-        fetchMoviesData();
+        setupViewModel();
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+        if (!haveNetworkConnection) model.updateDataSource();
+    }
+
+    private void setupViewModel() {
+        final Observer<List<MovieModel>> observeMovieModels = new Observer<List<MovieModel>>() {
+            @Override
+            public void onChanged(@Nullable List<MovieModel> movieModels) {
+                if (movieModels == null) {
+                    showFetchError(fab);
+                } else {
+                    showFetchSuccess(fab);
+                    movieGalleryAdapter.resetData(movieModels);
+                    movieGalleryAdapter.notifyDataSetChanged();
+                }
+            }
+        };
+        Observer<LiveData<List<MovieModel>>> observeMovieSource = new Observer<LiveData<List<MovieModel>>>() {
+            @Override
+            public void onChanged(@Nullable LiveData<List<MovieModel>> listLiveData) {
+                if (movieSource != null)
+                    movieSource.removeObservers(MainActivity.this);
+                movieSource = listLiveData;
+                movieSource.observe(MainActivity.this, observeMovieModels);
+            }
+        };
+        model = ViewModelProviders.of(this).get(MainViewModel.class);
+        model.getMovieSource().observe(this, observeMovieSource);
     }
 
     @Override
@@ -83,20 +120,6 @@ public class MainActivity extends AppCompatActivity
 
     private void updateFab(FloatingActionButton fab) {
         fab.setImageDrawable(PreferencesUtils.getSortModeIcon(this));
-    }
-
-    private void fetchMoviesData() {
-        String sortMode = PreferencesUtils.getSortMode(getApplicationContext());
-        if (sortMode.equals(getString(R.string.pref_sort_mode_value_popular))) {
-            new FetchMoviesTask().execute(sortMode, PreferencesUtils.getApiKey(this));
-        } else if (sortMode.equals(getString(R.string.pref_sort_mode_value_top_rated))) {
-            new FetchMoviesTask().execute(sortMode, PreferencesUtils.getApiKey(this));
-        } else {
-            Snackbar.make(fab,
-                    getString(R.string.error_not_implemented, PreferencesUtils.getSortModeLabel(this)),
-                    Snackbar.LENGTH_INDEFINITE)
-                    .show();
-        }
     }
 
     @Override
@@ -145,7 +168,8 @@ public class MainActivity extends AppCompatActivity
 
     private void showFetchError(View view) {
         Snackbar sb = Snackbar.make(view, "", Snackbar.LENGTH_INDEFINITE);
-        if (NetworkUtils.haveNetworkConnection(getApplicationContext())) {
+        haveNetworkConnection = NetworkUtils.haveNetworkConnection(getApplicationContext());
+        if (haveNetworkConnection) {
             sb.setText(R.string.error_wrong_api_key);
             sb.setAction(R.string.action_enter_api_key, new View.OnClickListener() {
                 @Override
@@ -186,36 +210,6 @@ public class MainActivity extends AppCompatActivity
     public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String key) {
         if (key.equals(getString(R.string.pref_sort_mode_key))) {
             updateFab(fab);
-        }
-        fetchMoviesData();
-    }
-
-    class FetchMoviesTask extends AsyncTask<String, Void, MovieModel[]> {
-
-        @Override
-        protected void onPreExecute() {
-            setStateFetchingMovies(true);
-        }
-
-        @Override
-        protected MovieModel[] doInBackground(String... params) {
-            String sortMode = params[0];
-            String apiKey = params[1];
-            URL movieQueryUrl = NetworkUtils.buildUrl(sortMode, apiKey);
-            String jsonMovieResponse = NetworkUtils.getResponseFromHttpUrl(movieQueryUrl);
-            return JsonUtils.parseTheMovieDb(jsonMovieResponse);
-        }
-
-        @Override
-        protected void onPostExecute(MovieModel[] movies) {
-            setStateFetchingMovies(false);
-
-            if (movies == null) {
-                showFetchError(fab);
-            } else {
-                showFetchSuccess(fab);
-                movieGalleryAdapter.resetData(Arrays.asList(movies));
-            }
         }
     }
 }

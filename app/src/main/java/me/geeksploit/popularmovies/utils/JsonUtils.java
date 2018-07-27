@@ -28,6 +28,16 @@ public final class JsonUtils {
         return new JSONObject(json).getJSONArray(RESULTS);
     }
 
+    public static MovieModel parseMovie(JSONObject jsonObject) throws JSONException {
+        return new MovieModel(
+                jsonObject.getDouble(VOTE_AVERAGE),
+                jsonObject.getString(POSTER_PATH),
+                jsonObject.getString(TITLE),
+                jsonObject.getString(OVERVIEW),
+                jsonObject.getString(RELEASE_DATE),
+                jsonObject.getString(MOVIE_ID));
+    }
+
     public static ReviewModel parseReview(JSONObject jsonObject) throws JSONException {
         return new ReviewModel(
                 jsonObject.getString(REVIEW_AUTHOR),
@@ -42,32 +52,5 @@ public final class JsonUtils {
                 jsonObject.getString(VIDEO_NAME),
                 jsonObject.getString(VIDEO_SITE)
         );
-    }
-
-    public static MovieModel[] parseTheMovieDb(String json) {
-        if (json == null) return null;
-
-        try {
-            JSONArray jsonMovies = new JSONObject(json).getJSONArray(RESULTS);
-            return parseMovies(jsonMovies);
-        } catch (JSONException e) {
-            e.printStackTrace();
-            return null;
-        }
-    }
-
-    private static MovieModel[] parseMovies(JSONArray jsonMovies) throws JSONException {
-        MovieModel[] movies = new MovieModel[jsonMovies.length()];
-        for (int i = 0; i < movies.length; i++) {
-            JSONObject jsonMovie = jsonMovies.getJSONObject(i);
-            movies[i] = new MovieModel(
-                    jsonMovie.getDouble(VOTE_AVERAGE),
-                    jsonMovie.getString(POSTER_PATH),
-                    jsonMovie.getString(TITLE),
-                    jsonMovie.getString(OVERVIEW),
-                    jsonMovie.getString(RELEASE_DATE),
-                    jsonMovie.getString(MOVIE_ID));
-        }
-        return movies;
     }
 }
