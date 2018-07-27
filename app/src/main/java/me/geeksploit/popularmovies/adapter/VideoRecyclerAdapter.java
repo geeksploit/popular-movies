@@ -48,6 +48,15 @@ public class VideoRecyclerAdapter extends RecyclerView.Adapter<VideoRecyclerAdap
                 }
             }
         });
+
+        holder.mShareView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if (null != mShareListener) {
+                    mShareListener.onClickShareVideoItem(holder.mItem);
+                }
+            }
+        });
     }
 
     @Override
