@@ -37,6 +37,7 @@ public class MainActivity extends AppCompatActivity
     private LiveData<List<MovieModel>> movieSource;
     private FloatingActionButton fab;
     private MainViewModel model;
+    private boolean haveNetworkConnection = true;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -48,6 +49,12 @@ public class MainActivity extends AppCompatActivity
                 .registerOnSharedPreferenceChangeListener(this);
         initializeViews();
         setupViewModel();
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+        if (!haveNetworkConnection) model.updateDataSource();
     }
 
     private void setupViewModel() {
@@ -161,7 +168,8 @@ public class MainActivity extends AppCompatActivity
 
     private void showFetchError(View view) {
         Snackbar sb = Snackbar.make(view, "", Snackbar.LENGTH_INDEFINITE);
-        if (NetworkUtils.haveNetworkConnection(getApplicationContext())) {
+        haveNetworkConnection = NetworkUtils.haveNetworkConnection(getApplicationContext());
+        if (haveNetworkConnection) {
             sb.setText(R.string.error_wrong_api_key);
             sb.setAction(R.string.action_enter_api_key, new View.OnClickListener() {
                 @Override
