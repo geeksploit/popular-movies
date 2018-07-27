@@ -10,6 +10,7 @@ import android.widget.TextView;
 import java.util.List;
 
 import me.geeksploit.popularmovies.R;
+import me.geeksploit.popularmovies.fragments.VideoFragment.OnClickShareVideoItemListener;
 import me.geeksploit.popularmovies.fragments.VideoFragment.OnClickVideoItemListener;
 import me.geeksploit.popularmovies.model.VideoModel;
 
@@ -17,10 +18,12 @@ public class VideoRecyclerAdapter extends RecyclerView.Adapter<VideoRecyclerAdap
 
     private final List<VideoModel> mValues;
     private final OnClickVideoItemListener mListener;
+    private final OnClickShareVideoItemListener mShareListener;
 
-    public VideoRecyclerAdapter(List<VideoModel> items, OnClickVideoItemListener listener) {
+    public VideoRecyclerAdapter(List<VideoModel> items, OnClickVideoItemListener listener, OnClickShareVideoItemListener shareListener) {
         mValues = items;
         mListener = listener;
+        mShareListener = shareListener;
     }
 
     @NonNull
