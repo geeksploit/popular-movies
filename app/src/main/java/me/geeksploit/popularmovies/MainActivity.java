@@ -1,5 +1,8 @@
 package me.geeksploit.popularmovies;
 
+import android.arch.lifecycle.LiveData;
+import android.arch.lifecycle.Observer;
+import android.arch.lifecycle.ViewModelProviders;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -7,6 +10,7 @@ import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.provider.Settings;
+import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AlertDialog;
@@ -17,7 +21,10 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 
+import java.util.List;
+
 import me.geeksploit.popularmovies.adapter.MovieGalleryAdapter;
+import me.geeksploit.popularmovies.model.MainViewModel;
 import me.geeksploit.popularmovies.model.MovieModel;
 import me.geeksploit.popularmovies.utils.NetworkUtils;
 import me.geeksploit.popularmovies.utils.PreferencesUtils;
@@ -27,7 +34,9 @@ public class MainActivity extends AppCompatActivity
 
     private View progressBar;
     private MovieGalleryAdapter movieGalleryAdapter;
+    private LiveData<List<MovieModel>> movieSource;
     private FloatingActionButton fab;
+    private MainViewModel model;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -38,6 +47,33 @@ public class MainActivity extends AppCompatActivity
         PreferenceManager.getDefaultSharedPreferences(this)
                 .registerOnSharedPreferenceChangeListener(this);
         initializeViews();
+        setupViewModel();
+    }
+
+    private void setupViewModel() {
+        final Observer<List<MovieModel>> observeMovieModels = new Observer<List<MovieModel>>() {
+            @Override
+            public void onChanged(@Nullable List<MovieModel> movieModels) {
+                if (movieModels == null) {
+                    showFetchError(fab);
+                } else {
+                    showFetchSuccess(fab);
+                    movieGalleryAdapter.resetData(movieModels);
+                    movieGalleryAdapter.notifyDataSetChanged();
+                }
+            }
+        };
+        Observer<LiveData<List<MovieModel>>> observeMovieSource = new Observer<LiveData<List<MovieModel>>>() {
+            @Override
+            public void onChanged(@Nullable LiveData<List<MovieModel>> listLiveData) {
+                if (movieSource != null)
+                    movieSource.removeObservers(MainActivity.this);
+                movieSource = listLiveData;
+                movieSource.observe(MainActivity.this, observeMovieModels);
+            }
+        };
+        model = ViewModelProviders.of(this).get(MainViewModel.class);
+        model.getMovieSource().observe(this, observeMovieSource);
     }
 
     @Override
