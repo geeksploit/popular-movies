@@ -24,4 +24,7 @@ public final class MainViewModel extends AndroidViewModel {
         mMovieSource = new MutableLiveData<>();
     }
 
+    public MutableLiveData<LiveData<List<MovieModel>>> getMovieSource() {
+        return mMovieSource;
+    }
 }
