@@ -121,6 +121,10 @@ public class VideoFragment extends Fragment {
         void onClickVideoItem(VideoModel item);
     }
 
+    public interface OnClickShareVideoItemListener {
+        void onClickShareVideoItem(VideoModel item);
+    }
+
     class FetchVideosTask extends AsyncTask<String, VideoModel, List<VideoModel>> {
 
         @Override
