@@ -3,8 +3,10 @@ package me.geeksploit.popularmovies;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.provider.Settings;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
@@ -26,7 +28,8 @@ import me.geeksploit.popularmovies.utils.JsonUtils;
 import me.geeksploit.popularmovies.utils.NetworkUtils;
 import me.geeksploit.popularmovies.utils.PreferencesUtils;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity
+        implements SharedPreferences.OnSharedPreferenceChangeListener {
 
     private View progressBar;
     private MovieGalleryAdapter movieGalleryAdapter;
@@ -38,7 +41,8 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-
+        PreferenceManager.getDefaultSharedPreferences(this)
+                .registerOnSharedPreferenceChangeListener(this);
         initializeViews();
     }
 
@@ -46,6 +50,13 @@ public class MainActivity extends AppCompatActivity {
     protected void onStart() {
         super.onStart();
         fetchMoviesData();
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        PreferenceManager.getDefaultSharedPreferences(this)
+                .unregisterOnSharedPreferenceChangeListener(this);
     }
 
     private void initializeViews() {
@@ -191,6 +202,14 @@ public class MainActivity extends AppCompatActivity {
             fab.setEnabled(true);
             progressBar.setVisibility(View.GONE);
         }
+    }
+
+    @Override
+    public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String key) {
+        if (key.equals(getString(R.string.pref_sort_mode_key))) {
+            updateFab(fab);
+        }
+        fetchMoviesData();
     }
 
     class FetchMoviesTask extends AsyncTask<String, Void, MovieModel[]> {
