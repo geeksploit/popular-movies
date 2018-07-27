@@ -11,7 +11,8 @@ import android.support.v7.preference.PreferenceScreen;
 
 import me.geeksploit.popularmovies.R;
 
-public final class SettingsFragment extends PreferenceFragmentCompat {
+public final class SettingsFragment extends PreferenceFragmentCompat
+        implements SharedPreferences.OnSharedPreferenceChangeListener {
 
     /**
      * Called during {@link #onCreate(Bundle)} to supply the preferences for this fragment.
@@ -48,5 +49,29 @@ public final class SettingsFragment extends PreferenceFragmentCompat {
                 e.printStackTrace();
             }
         }
+    }
+
+    @Override
+    public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String key) {
+        Preference preference = findPreference(key);
+        if (preference == null) return;
+        if (preference instanceof CheckBoxPreference) return;
+
+        String value = sharedPreferences.getString(preference.getKey(), "");
+        setPreferenceSummary(preference, value);
+    }
+
+    @Override
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        getPreferenceScreen().getSharedPreferences()
+                .registerOnSharedPreferenceChangeListener(this);
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        getPreferenceScreen().getSharedPreferences()
+                .unregisterOnSharedPreferenceChangeListener(this);
     }
 }
