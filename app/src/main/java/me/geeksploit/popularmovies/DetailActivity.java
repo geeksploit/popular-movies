@@ -20,7 +20,7 @@ import me.geeksploit.popularmovies.model.VideoModel;
 import me.geeksploit.popularmovies.utils.NetworkUtils;
 
 public class DetailActivity extends AppCompatActivity implements DetailsFragment.OnClickFavoritesListener,
-        VideoFragment.OnClickVideoItemListener {
+        VideoFragment.OnClickVideoItemListener, VideoFragment.OnClickShareVideoItemListener {
 
     public static final String EXTRA_MOVIE = "MOVIE_DATA";
 
@@ -88,5 +88,15 @@ public class DetailActivity extends AppCompatActivity implements DetailsFragment
         } catch (UnsupportedOperationException e) {
             Toast.makeText(this, e.getMessage(), Toast.LENGTH_LONG).show();
         }
+    }
+
+    @Override
+    public void onClickShareVideoItem(VideoModel item) {
+        Uri uri = NetworkUtils.buildUriViewVideo(item.getSite(), item.getKey());
+        Intent sendIntent = new Intent();
+        sendIntent.setAction(Intent.ACTION_SEND);
+        sendIntent.putExtra(Intent.EXTRA_TEXT, item.getName() + "\n" + uri.toString());
+        sendIntent.setType("text/plain");
+        startActivity(sendIntent);
     }
 }
