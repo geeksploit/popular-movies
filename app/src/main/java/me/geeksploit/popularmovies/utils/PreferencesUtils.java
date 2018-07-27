@@ -19,7 +19,7 @@ public class PreferencesUtils {
     }
 
     public static String getApiKey(Context c) {
-        return getPreferences(c).getString(PREF_KEY_API,PREF_VALUE_API_DEFAULT);
+        return getPreferences(c).getString(PREF_KEY_API, PREF_VALUE_API_DEFAULT);
     }
 
     public static void setApiKey(Context c, String apiKey) {
