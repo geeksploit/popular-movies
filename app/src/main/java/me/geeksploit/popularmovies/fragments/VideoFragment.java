@@ -139,7 +139,7 @@ public class VideoFragment extends Fragment {
                     models.add(JsonUtils.parseVideo(results.getJSONObject(i)));
                     publishProgress(models.get(i));
                 }
-            } catch (JSONException | MalformedURLException e) {
+            } catch (JSONException | MalformedURLException | NullPointerException e ) {
                 e.printStackTrace();
             }
             return models;
