@@ -5,11 +5,13 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import java.util.List;
 
 import me.geeksploit.popularmovies.R;
+import me.geeksploit.popularmovies.fragments.VideoFragment.OnClickShareVideoItemListener;
 import me.geeksploit.popularmovies.fragments.VideoFragment.OnClickVideoItemListener;
 import me.geeksploit.popularmovies.model.VideoModel;
 
@@ -17,10 +19,12 @@ public class VideoRecyclerAdapter extends RecyclerView.Adapter<VideoRecyclerAdap
 
     private final List<VideoModel> mValues;
     private final OnClickVideoItemListener mListener;
+    private final OnClickShareVideoItemListener mShareListener;
 
-    public VideoRecyclerAdapter(List<VideoModel> items, OnClickVideoItemListener listener) {
+    public VideoRecyclerAdapter(List<VideoModel> items, OnClickVideoItemListener listener, OnClickShareVideoItemListener shareListener) {
         mValues = items;
         mListener = listener;
+        mShareListener = shareListener;
     }
 
     @NonNull
@@ -44,6 +48,15 @@ public class VideoRecyclerAdapter extends RecyclerView.Adapter<VideoRecyclerAdap
                 }
             }
         });
+
+        holder.mShareView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if (null != mShareListener) {
+                    mShareListener.onClickShareVideoItem(holder.mItem);
+                }
+            }
+        });
     }
 
     @Override
@@ -58,12 +71,14 @@ public class VideoRecyclerAdapter extends RecyclerView.Adapter<VideoRecyclerAdap
     public class ViewHolder extends RecyclerView.ViewHolder {
         final View mView;
         final TextView mNameView;
+        final ImageView mShareView;
         public VideoModel mItem;
 
         ViewHolder(View view) {
             super(view);
             mView = view;
             mNameView = view.findViewById(R.id.video_item_name);
+            mShareView = view.findViewById(R.id.video_item_share);
         }
 
         @Override
