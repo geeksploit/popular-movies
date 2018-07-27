@@ -17,7 +17,6 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.EditText;
 
 import java.net.URL;
 import java.util.Arrays;
@@ -116,7 +115,7 @@ public class MainActivity extends AppCompatActivity
 
         //noinspection SimplifiableIfStatement
         if (id == R.id.action_settings) {
-            startActivity(new Intent(this, SettingsActivity.class));
+            showSettings();
             return true;
         } else if (id == R.id.action_about) {
             showAboutDialog(MainActivity.this);
@@ -126,25 +125,8 @@ public class MainActivity extends AppCompatActivity
         return super.onOptionsItemSelected(item);
     }
 
-    private void showApiKeyDialog(Context context) {
-        View view = getLayoutInflater().inflate(R.layout.dialog_api_key, null);
-        final EditText apiKey = view.findViewById(R.id.api_key);
-        apiKey.setText(PreferencesUtils.getApiKey(getApplicationContext()));
-        new AlertDialog.Builder(context)
-                .setView(view)
-                .setTitle(R.string.dialog_api_key_title)
-                .setPositiveButton(android.R.string.ok,
-                        new DialogInterface.OnClickListener() {
-                            public void onClick(DialogInterface dialog, int id) {
-                                PreferencesUtils.setApiKey(
-                                        getApplicationContext(),
-                                        apiKey.getText().toString()
-                                );
-                                fetchMoviesData();
-                            }
-                        })
-                .create()
-                .show();
+    private void showSettings() {
+        startActivity(new Intent(getApplicationContext(), SettingsActivity.class));
     }
 
     private void showAboutDialog(Context context) {
@@ -168,7 +150,7 @@ public class MainActivity extends AppCompatActivity
             sb.setAction(R.string.action_enter_api_key, new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    showApiKeyDialog(MainActivity.this);
+                    showSettings();
                 }
             });
         } else {
