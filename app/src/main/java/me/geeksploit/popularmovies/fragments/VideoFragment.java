@@ -44,6 +44,7 @@ public class VideoFragment extends Fragment {
     private int mColumnCount = 1;
     private OnClickVideoItemListener mListener;
     private VideoRecyclerAdapter mVideoAdapter;
+    private OnClickShareVideoItemListener mShareListener;
 
     /**
      * Mandatory empty constructor for the fragment manager to instantiate the
@@ -103,12 +104,20 @@ public class VideoFragment extends Fragment {
             throw new RuntimeException(context.toString()
                     + " must implement OnClickVideoItemListener");
         }
+
+        if (context instanceof OnClickShareVideoItemListener) {
+            mShareListener = (OnClickShareVideoItemListener) context;
+        } else {
+            throw new RuntimeException(context.toString()
+                    + " must implement OnClickShareVideoItemListener");
+        }
     }
 
     @Override
     public void onDetach() {
         super.onDetach();
         mListener = null;
+        mShareListener = null;
     }
 
     /**
