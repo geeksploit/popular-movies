@@ -8,7 +8,6 @@ import android.os.Bundle;
 import android.provider.Settings;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
-import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.RecyclerView;
@@ -79,12 +78,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void updateFab(FloatingActionButton fab) {
-        fab.setImageDrawable(ContextCompat.getDrawable(
-                getApplicationContext(),
-                PreferencesUtils.isSortModePopular(getApplicationContext()) ?
-                        R.drawable.sort_popular :
-                        R.drawable.sort_top_rated)
-        );
+        fab.setImageDrawable(PreferencesUtils.getSortModeIcon(this));
     }
 
     private void switchSortMode() {
@@ -184,9 +178,7 @@ public class MainActivity extends AppCompatActivity {
 
     private void showFetchSuccess(FloatingActionButton fab) {
         Snackbar.make(fab,
-                PreferencesUtils.isSortModePopular(getApplicationContext()) ?
-                        getString(R.string.message_order_by_popularity) :
-                        getString(R.string.message_order_by_rating),
+                getString(R.string.message_order_by, PreferencesUtils.getSortModeLabel(this)),
                 Snackbar.LENGTH_LONG)
                 .show();
     }
