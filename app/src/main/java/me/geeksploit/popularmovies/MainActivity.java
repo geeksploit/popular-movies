@@ -44,11 +44,6 @@ public class MainActivity extends AppCompatActivity
         PreferenceManager.getDefaultSharedPreferences(this)
                 .registerOnSharedPreferenceChangeListener(this);
         initializeViews();
-    }
-
-    @Override
-    protected void onStart() {
-        super.onStart();
         fetchMoviesData();
     }
 
@@ -98,10 +93,17 @@ public class MainActivity extends AppCompatActivity
     }
 
     private void fetchMoviesData() {
-        new FetchMoviesTask().execute(
-                PreferencesUtils.getSortMode(getApplicationContext()),
-                PreferencesUtils.getApiKey(getApplicationContext())
-        );
+        String sortMode = PreferencesUtils.getSortMode(getApplicationContext());
+        if (sortMode.equals(getString(R.string.pref_sort_mode_value_popular))) {
+            new FetchMoviesTask().execute(sortMode, PreferencesUtils.getApiKey(this));
+        } else if (sortMode.equals(getString(R.string.pref_sort_mode_value_top_rated))) {
+            new FetchMoviesTask().execute(sortMode, PreferencesUtils.getApiKey(this));
+        } else {
+            Snackbar.make(fab,
+                    getString(R.string.error_not_implemented, PreferencesUtils.getSortModeLabel(this)),
+                    Snackbar.LENGTH_INDEFINITE)
+                    .show();
+        }
     }
 
     @Override
