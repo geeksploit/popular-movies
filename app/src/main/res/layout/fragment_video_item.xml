@@ -18,9 +18,21 @@
 
     <TextView
         android:id="@+id/video_item_name"
-        android:layout_width="wrap_content"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_margin="@dimen/size_medium"
+        android:layout_weight="1"
         android:textAppearance="?attr/textAppearanceListItem"
         tools:text="@tools:sample/lorem" />
+
+    <ImageButton
+        android:id="@+id/video_item_share"
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:background="@android:color/transparent"
+        android:contentDescription="@string/description_video_share"
+        android:padding="@dimen/size_medium"
+        android:src="@android:drawable/ic_menu_share"
+        android:tint="@color/colorPrimary" />
+
 </LinearLayout>
