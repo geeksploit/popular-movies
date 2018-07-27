@@ -11,19 +11,19 @@ import me.geeksploit.popularmovies.R;
 
 public class PreferencesUtils {
 
-    private static final String PREF_KEY_API = "api_key";
-    private static final String PREF_VALUE_API_DEFAULT = "";
-
     private static SharedPreferences getPreferences(Context context) {
         return PreferenceManager.getDefaultSharedPreferences(context);
     }
 
     public static String getApiKey(Context c) {
-        return getPreferences(c).getString(PREF_KEY_API, PREF_VALUE_API_DEFAULT);
+        String key = c.getString(R.string.pref_api_key);
+        String defValue = c.getString(R.string.pref_api_none);
+        return getPreferences(c).getString(key, defValue);
     }
 
     public static void setApiKey(Context c, String apiKey) {
-        getPreferences(c).edit().putString(PREF_KEY_API, apiKey).apply();
+        String key = c.getString(R.string.pref_api_key);
+        getPreferences(c).edit().putString(key, apiKey).apply();
     }
 
     public static String getSortMode(Context c) {
