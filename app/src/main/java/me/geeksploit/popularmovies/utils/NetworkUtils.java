@@ -33,18 +33,13 @@ public final class NetworkUtils {
 
     private static final String SITE_YOUTUBE = "YouTube";
 
-    public static URL buildUrl(String sortMode, String apiKey) {
+    public static URL buildUrl(String sortMode, String apiKey) throws MalformedURLException {
         // TODO: should url building process rely on sortMode given as a parameter?
         Uri builtUri = Uri.parse(TMDB_MOVIES_URL_BASE).buildUpon()
                 .appendPath(sortMode)
                 .appendQueryParameter(PARAM_API_KEY, apiKey)
                 .build();
-        try {
-            return new URL(builtUri.toString());
-        } catch (MalformedURLException e) {
-            e.printStackTrace();
-            return null;
-        }
+        return new URL(builtUri.toString());
     }
 
     public static URL buildUrlReviews(Integer movieId, String apiKey) throws MalformedURLException {
