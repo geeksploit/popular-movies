@@ -76,8 +76,7 @@ public class MainActivity extends AppCompatActivity
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                switchSortMode();
-                updateFab(fab);
+                PreferencesUtils.switchSortMode(getApplicationContext());
             }
         });
         updateFab(fab);
@@ -85,11 +84,6 @@ public class MainActivity extends AppCompatActivity
 
     private void updateFab(FloatingActionButton fab) {
         fab.setImageDrawable(PreferencesUtils.getSortModeIcon(this));
-    }
-
-    private void switchSortMode() {
-        PreferencesUtils.switchSortMode(getApplicationContext());
-        fetchMoviesData();
     }
 
     private void fetchMoviesData() {
