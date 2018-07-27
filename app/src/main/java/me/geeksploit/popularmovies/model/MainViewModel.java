@@ -5,8 +5,10 @@ import android.arch.lifecycle.AndroidViewModel;
 import android.arch.lifecycle.LiveData;
 import android.arch.lifecycle.MutableLiveData;
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.os.AsyncTask;
 import android.support.annotation.NonNull;
+import android.support.v7.preference.PreferenceManager;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -22,7 +24,8 @@ import me.geeksploit.popularmovies.utils.JsonUtils;
 import me.geeksploit.popularmovies.utils.NetworkUtils;
 import me.geeksploit.popularmovies.utils.PreferencesUtils;
 
-public final class MainViewModel extends AndroidViewModel {
+public final class MainViewModel extends AndroidViewModel
+        implements SharedPreferences.OnSharedPreferenceChangeListener {
 
     private final LiveData<List<MovieModel>> mMoviesFromLocalFavorites;
     private final MutableLiveData<List<MovieModel>> mMoviesFromNetworkApi;
@@ -35,6 +38,8 @@ public final class MainViewModel extends AndroidViewModel {
         mMoviesFromNetworkApi = new MutableLiveData<>();
         mMovieSource = new MutableLiveData<>();
         updateDataSource();
+        PreferenceManager.getDefaultSharedPreferences(getApplication())
+                .registerOnSharedPreferenceChangeListener(this);
     }
 
     public MutableLiveData<LiveData<List<MovieModel>>> getMovieSource() {
@@ -53,6 +58,18 @@ public final class MainViewModel extends AndroidViewModel {
         } else if (c.getString(R.string.pref_sort_mode_value_favorite).equals(sortMode)) {
             mMovieSource.setValue(mMoviesFromLocalFavorites);
         }
+    }
+
+    @Override
+    protected void onCleared() {
+        super.onCleared();
+        PreferenceManager.getDefaultSharedPreferences(getApplication())
+                .unregisterOnSharedPreferenceChangeListener(this);
+    }
+
+    @Override
+    public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String key) {
+        updateDataSource();
     }
 
     class FetchMoviesTask extends AsyncTask<String, MovieModel, List<MovieModel>> {
