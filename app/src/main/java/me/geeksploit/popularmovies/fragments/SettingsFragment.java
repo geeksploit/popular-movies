@@ -50,7 +50,7 @@ public final class SettingsFragment extends PreferenceFragmentCompat
                 e.printStackTrace();
             }
         } else if (preference instanceof EditTextPreference) {
-            String summary = value.trim().isEmpty() ? getString(R.string.pref_api_none) : value;
+            String summary = value.trim().isEmpty() ? getString(R.string.dialog_api_key_hint) : value;
             preference.setSummary(summary);
         }
     }

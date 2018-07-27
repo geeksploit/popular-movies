@@ -9,7 +9,6 @@
         android:title="@string/pref_sort_mode_title" />
 
     <EditTextPreference
-        android:defaultValue="none"
         android:key="@string/pref_api_key"
         android:title="@string/pref_api_title" />
 
