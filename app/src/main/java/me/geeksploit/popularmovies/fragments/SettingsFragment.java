@@ -4,6 +4,7 @@ package me.geeksploit.popularmovies.fragments;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.v7.preference.CheckBoxPreference;
+import android.support.v7.preference.EditTextPreference;
 import android.support.v7.preference.ListPreference;
 import android.support.v7.preference.Preference;
 import android.support.v7.preference.PreferenceFragmentCompat;
@@ -48,6 +49,9 @@ public final class SettingsFragment extends PreferenceFragmentCompat
             } catch (IndexOutOfBoundsException e) {
                 e.printStackTrace();
             }
+        } else if (preference instanceof EditTextPreference) {
+            String summary = value.trim().isEmpty() ? getString(R.string.pref_api_none) : value;
+            preference.setSummary(summary);
         }
     }
 
