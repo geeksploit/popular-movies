@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <array name="pref_sort_mode_labels">
+        <item>@string/pref_sort_mode_label_favorite</item>
+        <item>@string/pref_sort_mode_label_top_rated</item>
+        <item>@string/pref_sort_mode_label_popular</item>
+    </array>
+
+    <array name="pref_sort_mode_values">
+        <item>@string/pref_sort_mode_value_favorite</item>
+        <item>@string/pref_sort_mode_value_top_rated</item>
+        <item>@string/pref_sort_mode_value_popular</item>
+    </array>
+
+    <array name="pref_sort_mode_icons">
+        <item>@android:drawable/btn_star</item>
+        <item>@drawable/sort_top_rated</item>
+        <item>@drawable/sort_popular</item>
+    </array>
+
+</resources>

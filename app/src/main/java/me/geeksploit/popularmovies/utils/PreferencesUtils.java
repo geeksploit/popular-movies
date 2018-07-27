@@ -2,44 +2,60 @@ package me.geeksploit.popularmovies.utils;
 
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.graphics.drawable.Drawable;
 import android.preference.PreferenceManager;
 
+import java.util.Arrays;
+
+import me.geeksploit.popularmovies.R;
+
 public class PreferencesUtils {
-
-    private static final String PREF_KEY_API = "api_key";
-    private static final String PREF_VALUE_API_DEFAULT = "";
-
-    private static final String PREF_KEY_SORT_MODE = "sort_mode";
-    private static final String PREF_VALUE_SORT_POPULAR = "popular";
-    private static final String PREF_VALUE_SORT_TOP_RATED = "top_rated";
-    private static final String PREF_VALUE_SORT_DEFAULT = PREF_VALUE_SORT_POPULAR;
 
     private static SharedPreferences getPreferences(Context context) {
         return PreferenceManager.getDefaultSharedPreferences(context);
     }
 
     public static String getApiKey(Context c) {
-        return getPreferences(c).getString(PREF_KEY_API,PREF_VALUE_API_DEFAULT);
+        String key = c.getString(R.string.pref_api_key);
+        String defValue = c.getString(R.string.pref_api_none);
+        return getPreferences(c).getString(key, defValue);
     }
 
     public static void setApiKey(Context c, String apiKey) {
-        getPreferences(c).edit().putString(PREF_KEY_API, apiKey).apply();
+        String key = c.getString(R.string.pref_api_key);
+        getPreferences(c).edit().putString(key, apiKey).apply();
     }
 
     public static String getSortMode(Context c) {
-        return getPreferences(c).getString(PREF_KEY_SORT_MODE, PREF_VALUE_SORT_DEFAULT);
+        String modeKey = c.getString(R.string.pref_sort_mode_key);
+        String modeDefault = c.getString(R.string.pref_sort_mode_value_popular);
+        return getPreferences(c).getString(modeKey, modeDefault);
     }
 
     private static void setSortMode(Context c, String sortMode) {
-        getPreferences(c).edit().putString(PREF_KEY_SORT_MODE, sortMode).apply();
+        String modeKey = c.getString(R.string.pref_sort_mode_key);
+        getPreferences(c).edit().putString(modeKey, sortMode).apply();
     }
 
     public static void switchSortMode(Context c) {
-        setSortMode(c, isSortModePopular(c) ? PREF_VALUE_SORT_TOP_RATED : PREF_VALUE_SORT_POPULAR);
+        String[] sortModes = getSortModeValues(c);
+        int nextSortMode = (getSortModeIndex(c) + 1) % sortModes.length;
+        setSortMode(c, sortModes[nextSortMode]);
     }
 
-    public static boolean isSortModePopular(Context c) {
-        return PREF_VALUE_SORT_POPULAR.equals(getSortMode(c));
+    public static String getSortModeLabel(Context c) {
+        return c.getResources().getStringArray(R.array.pref_sort_mode_labels)[getSortModeIndex(c)];
     }
 
+    public static Drawable getSortModeIcon(Context c) {
+        return c.getResources().obtainTypedArray(R.array.pref_sort_mode_icons).getDrawable(getSortModeIndex(c));
+    }
+
+    private static String[] getSortModeValues(Context c) {
+        return c.getResources().getStringArray(R.array.pref_sort_mode_values);
+    }
+
+    private static int getSortModeIndex(Context c) {
+        return Arrays.asList(getSortModeValues(c)).indexOf(getSortMode(c));
+    }
 }

@@ -3,12 +3,13 @@ package me.geeksploit.popularmovies;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.provider.Settings;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
-import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.RecyclerView;
@@ -16,7 +17,6 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.EditText;
 
 import java.net.URL;
 import java.util.Arrays;
@@ -27,7 +27,8 @@ import me.geeksploit.popularmovies.utils.JsonUtils;
 import me.geeksploit.popularmovies.utils.NetworkUtils;
 import me.geeksploit.popularmovies.utils.PreferencesUtils;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity
+        implements SharedPreferences.OnSharedPreferenceChangeListener {
 
     private View progressBar;
     private MovieGalleryAdapter movieGalleryAdapter;
@@ -39,14 +40,17 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-
+        PreferenceManager.getDefaultSharedPreferences(this)
+                .registerOnSharedPreferenceChangeListener(this);
         initializeViews();
+        fetchMoviesData();
     }
 
     @Override
-    protected void onStart() {
-        super.onStart();
-        fetchMoviesData();
+    protected void onDestroy() {
+        super.onDestroy();
+        PreferenceManager.getDefaultSharedPreferences(this)
+                .unregisterOnSharedPreferenceChangeListener(this);
     }
 
     private void initializeViews() {
@@ -71,32 +75,28 @@ public class MainActivity extends AppCompatActivity {
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                switchSortMode();
-                updateFab(fab);
+                PreferencesUtils.switchSortMode(getApplicationContext());
             }
         });
         updateFab(fab);
     }
 
     private void updateFab(FloatingActionButton fab) {
-        fab.setImageDrawable(ContextCompat.getDrawable(
-                getApplicationContext(),
-                PreferencesUtils.isSortModePopular(getApplicationContext()) ?
-                        R.drawable.sort_popular :
-                        R.drawable.sort_top_rated)
-        );
-    }
-
-    private void switchSortMode() {
-        PreferencesUtils.switchSortMode(getApplicationContext());
-        fetchMoviesData();
+        fab.setImageDrawable(PreferencesUtils.getSortModeIcon(this));
     }
 
     private void fetchMoviesData() {
-        new FetchMoviesTask().execute(
-                PreferencesUtils.getSortMode(getApplicationContext()),
-                PreferencesUtils.getApiKey(getApplicationContext())
-        );
+        String sortMode = PreferencesUtils.getSortMode(getApplicationContext());
+        if (sortMode.equals(getString(R.string.pref_sort_mode_value_popular))) {
+            new FetchMoviesTask().execute(sortMode, PreferencesUtils.getApiKey(this));
+        } else if (sortMode.equals(getString(R.string.pref_sort_mode_value_top_rated))) {
+            new FetchMoviesTask().execute(sortMode, PreferencesUtils.getApiKey(this));
+        } else {
+            Snackbar.make(fab,
+                    getString(R.string.error_not_implemented, PreferencesUtils.getSortModeLabel(this)),
+                    Snackbar.LENGTH_INDEFINITE)
+                    .show();
+        }
     }
 
     @Override
@@ -115,7 +115,7 @@ public class MainActivity extends AppCompatActivity {
 
         //noinspection SimplifiableIfStatement
         if (id == R.id.action_settings) {
-            showApiKeyDialog(MainActivity.this);
+            showSettings();
             return true;
         } else if (id == R.id.action_about) {
             showAboutDialog(MainActivity.this);
@@ -125,25 +125,8 @@ public class MainActivity extends AppCompatActivity {
         return super.onOptionsItemSelected(item);
     }
 
-    private void showApiKeyDialog(Context context) {
-        View view = getLayoutInflater().inflate(R.layout.dialog_api_key, null);
-        final EditText apiKey = view.findViewById(R.id.api_key);
-        apiKey.setText(PreferencesUtils.getApiKey(getApplicationContext()));
-        new AlertDialog.Builder(context)
-                .setView(view)
-                .setTitle(R.string.dialog_api_key_title)
-                .setPositiveButton(android.R.string.ok,
-                        new DialogInterface.OnClickListener() {
-                            public void onClick(DialogInterface dialog, int id) {
-                                PreferencesUtils.setApiKey(
-                                        getApplicationContext(),
-                                        apiKey.getText().toString()
-                                );
-                                fetchMoviesData();
-                            }
-                        })
-                .create()
-                .show();
+    private void showSettings() {
+        startActivity(new Intent(getApplicationContext(), SettingsActivity.class));
     }
 
     private void showAboutDialog(Context context) {
@@ -167,7 +150,7 @@ public class MainActivity extends AppCompatActivity {
             sb.setAction(R.string.action_enter_api_key, new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    showApiKeyDialog(MainActivity.this);
+                    showSettings();
                 }
             });
         } else {
@@ -184,9 +167,7 @@ public class MainActivity extends AppCompatActivity {
 
     private void showFetchSuccess(FloatingActionButton fab) {
         Snackbar.make(fab,
-                PreferencesUtils.isSortModePopular(getApplicationContext()) ?
-                        getString(R.string.message_order_by_popularity) :
-                        getString(R.string.message_order_by_rating),
+                getString(R.string.message_order_by, PreferencesUtils.getSortModeLabel(this)),
                 Snackbar.LENGTH_LONG)
                 .show();
     }
@@ -199,6 +180,14 @@ public class MainActivity extends AppCompatActivity {
             fab.setEnabled(true);
             progressBar.setVisibility(View.GONE);
         }
+    }
+
+    @Override
+    public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String key) {
+        if (key.equals(getString(R.string.pref_sort_mode_key))) {
+            updateFab(fab);
+        }
+        fetchMoviesData();
     }
 
     class FetchMoviesTask extends AsyncTask<String, Void, MovieModel[]> {

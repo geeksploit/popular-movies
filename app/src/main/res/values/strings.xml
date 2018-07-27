@@ -27,13 +27,25 @@
     <string name="error_no_internet_connection">Please check Internet connection</string>
     <string name="error_not_implemented" translatable="false">not implemented (%s)</string>
 
-    <string name="message_order_by_popularity">Order by popularity</string>
-    <string name="message_order_by_rating">Order by rating</string>
+    <string name="message_order_by">Order by %s</string>
 
     <string name="mock_overview">Several years after the demise of Jurassic World, a volcanic eruption threatens the remaining dinosaurs on the island of Isla Nublar. Claire Dearing, the former park manager and founder of the Dinosaur Protection Group, recruits Owen Grady to help prevent the extinction of the dinosaurs once again.</string>
     <string name="mock_rating">7.700000</string>
     <string name="mock_title">Jurassic World: Fallen Kingdom</string>
     <string name="mock_release_date">2018-06-06</string>
+
+    <string name="pref_api_title">API key</string>
+    <string name="pref_api_none" translatable="false">none</string>
+    <string name="pref_api_key" translatable="false">api_key</string>
+
+    <string name="pref_sort_mode_title">Sort criteria</string>
+    <string name="pref_sort_mode_key" translatable="false">sort_mode</string>
+    <string name="pref_sort_mode_label_favorite">favorite</string>
+    <string name="pref_sort_mode_label_top_rated">highest rating</string>
+    <string name="pref_sort_mode_label_popular">popularity</string>
+    <string name="pref_sort_mode_value_favorite" translatable="false">favorite</string>
+    <string name="pref_sort_mode_value_top_rated" translatable="false">top_rated</string>
+    <string name="pref_sort_mode_value_popular" translatable="false">popular</string>
 
     <string name="title_overview">Overview</string>
     <string name="title_trailers">Trailers</string>
