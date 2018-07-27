@@ -5,6 +5,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import java.util.List;
@@ -61,12 +62,14 @@ public class VideoRecyclerAdapter extends RecyclerView.Adapter<VideoRecyclerAdap
     public class ViewHolder extends RecyclerView.ViewHolder {
         final View mView;
         final TextView mNameView;
+        final ImageView mShareView;
         public VideoModel mItem;
 
         ViewHolder(View view) {
             super(view);
             mView = view;
             mNameView = view.findViewById(R.id.video_item_name);
+            mShareView = view.findViewById(R.id.video_item_share);
         }
 
         @Override
